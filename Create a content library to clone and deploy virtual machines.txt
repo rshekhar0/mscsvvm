@@ -1,0 +1,76 @@
+Practical No: 04
+(A) Aim: Create a content library to clone and deploy virtual machines.
+Objective: In this lab, you perform the following tasks:
+1. Create a Conent Library
+2. Clone a VM Tempate to a Template in a content library
+3. Deploy a VM from a VM Template in the content library
+4. Delete a content library
+Steps:
+Task 1: Create a Content Library
+You create a content library in vSphere Client and populate it with templates, which you can use to
+deploy virtual machines or vApps in your virtual environment.
+1. If vSphere Client is not active, open your Firefox web browser, click vSphere Site-A on the
+favorite bar, and select vSphere Client (SA-VCSA-01).
+2. Log in with the user name administrator@vsphere.local and the password VMware1!.
+3. In vSphere Client, click the Menu icon and select Content Libraries.
+
+4. In the center pane, click the Create a new content library icon (plus sign) under Content
+Libraries.
+5. On the Name and location page, enter VM_Library in the Name text box and click Next.
+6. In the Configure content library page, verify that Local content library is selected.
+7. Select the Publish externally check box, and click Next.
+8. In the Add storage page, select iSCSI-Datastore, and click Next.
+9. On the Ready to complete page, review the information and click Finish.
+10. Wait for this task to finish before you go to the next task.
+Task 2: Clone a VM Template to a Template in a Content Library
+You clone virtual machines or VM templates from the vCenter Server inventory to templates in the
+content library and use them later to provision virtual machines on a cluster or a host. You can also
+clone a virtual machine or VM template to update an existing template in the library.
+1. In vSphere Client, click the Menu icon and select VMs and Templates.
+2. Expand the view of the data center and all folders.
+3. Right-click Photon-ForTemplate and select Clone to Template in Library.
+4. For Clone as, verify that New template is selected.
+5. Under the Name column, select VM_Library.
+6. Enter Photon-LibTemplate in the template name text box.
+7. Click OK and wait for the task to finish before you go to the next task.
+This process takes about 10 minutes.
+Task 3: Deploy a Virtual Machine from a VM Template in the Content Library
+You use a virtual machine template from a content library to deploy a virtual machine to a host or a
+cluster in your vSphere inventory.
+1. In vSphere Client, click the Menu icon and select Content Libraries.
+2. In Content Libraries, select VM_Library.
+3. Click the Templates tab.
+4. Right-click Photon-LibTemplate and select New VM from This Template.
+5. On the Select name and folder page, enter Photon-FromLib in the Virtual Machine Name text
+box.
+6. In Select a location for the virtual machine pane, expand sa-vcsa-01.vclass.local, select
+SADatacenter and click Next.
+
+7. On the Select a compute resource page, expand SA-Datacenter and select the sa-esxi-
+02.vclass.local host.
+
+8. Click Next.
+9. On the Review details page, review the information and click Next.
+10. On the Select storage page, select Class-Datastore.
+11. From the Select virtual disk format drop-down menu, select Thin Provision and click Next.
+12. On the Select Networks page, select Production from the Destination Network drop-down menu
+and click Next.
+13. On the Ready to complete page, review the information and click Finish.
+14. In the Recent Tasks pane, monitor the progress of the template deployment task and wait for
+completion.
+15. In vSphere Client, click the Menu icon and select VMs and Templates.
+16. In the navigator pane, select Photon-FromLib.
+17. Right-click Photon-FromLib and select Power > Power On.
+18. Open a console for the Photon-FromLib virtual machine.
+a. On the Summary tab, click Launch Web Console.
+19. Verify that the Photon-FromLib virtual machine is running.
+20. Close the Web Console for the Photon-FromLib virtual
+machine. vSphere Client returns to VMs and Templates.
+Task 4: Delete a Content Library
+You delete a content library that is no longer required.
+1. In vSphere Client, click the Menu icon and select Content Libraries.
+2. In Content Libraries, right-click the VM_Library content library and select Delete.
+3. In the Delete Content Library confirmation dialog box, click OK to verify the deletion.
+4. Leave vSphere Client open for the next lab.
+
+5. Inform your instructor that you have completed this lab. If prompted, continue to the next lab.

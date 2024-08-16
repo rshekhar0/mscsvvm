@@ -1,0 +1,223 @@
+Practical No: 10
+(A) Aim: Implement a vSphere DRS cluster
+Objective: In this lab, you perform the following tasks:
+1. Create a Load Imbalance
+2. Create a vSphere DRS Cluster
+3. Verify Proper vSphere DRS Cluster Functionality
+4. Create, Test, and Disable a VM-VM Affinity Rule
+5. Create, Test, and Disable an Anti-Affinity Rule
+6. Create, Test, and Disable a VM-Host Affinity Rule
+In this lab, you use vSphere Web Client to perform the tasks.
+Steps:
+Task 1: Create a Load Imbalance
+You create a load imbalance across the ESXi hosts in the SA-Compute-01 cluster to test how VMware
+vSphere® Distributed Resource SchedulerTM works.
+1. If vSphere Web Client is not active, open your Firefox Web browser, click vSphere Site-A on the
+favorite bar, and select vSphere Web Client (SA-VCSA-01).
+2. Log in with the user name administrator@vsphere.local and the password VMware1!.
+3. Click the Home icon and select Hosts and Clusters.
+4. Select sa-esxi-01.vclass.local. 114 Lab 17 Implementing vSphere DRS Clusters
+5. On the VMs tab, if virtual machines are present on sa-esxi-01.vclass.local, migrate the virtual
+machines to sa-esxi-02.vclass.local.
+IMPORTANT: Change compute resource only when migrating VMs.
+6. In the Navigator pane, select sa-esxi-02.vclass.local.
+7. On the VMs tab, click Virtual Machines.
+Compare the list of VMs shown in the list to the VMs shown in the Navigator pane.
+8. Ensure that all the VMs are powered on.
+9. Start the CPUBUSY script on each of the virtual machines.
+a. Right-click Win10-02 and select Open Console.
+b. You are logged in as vclass\administrator with the password VMware1!.
+c. Right-click the CPUBUSY script on each virtual machine’s desktop and select Open with
+Command Prompt.
+The number of running CPUBUSY instances required to cause vSphere DRS to migrate
+virtual machines to another host varies, depending on the resource capacity of the lab
+infrastructure. c. Repeat steps a through c for Win10-03 and Win10-04.
+Task 2: Create a vSphere DRS Cluster
+You create a vSphere DRS cluster to balance the computing capacity among all the ESXi hosts and
+the associated virtual machines without service interruption.
+1. In the Navigator pane, right-click the SA-Compute-01 cluster and select Settings.
+2. Select vSphere DRS from the middle pane.
+3. Click Edit. The Edit Cluster Settings wizard opens.
+4. Select the Turn On vSphere DRS check box.
+5. Select Manual from the DRS Automation drop-down menu.
+
+6. Click the arrow next to DRS Automation to expand the view and move the Migration Threshold
+slider to Aggressive, which is to the right side of the slider.
+7. Leave other settings at their default values and click OK.
+Task 3: Verify Proper vSphere DRS Cluster Functionality
+You can run vSphere DRS in either manual, partially automated, or fully-automated modes. In the
+manual mode, you review the recommendations for optimal virtual machine placement provided by
+vSphere DRS and decide whether to make the changes.
+1. Click the Monitor tab and click vSphere DRS.
+If you do not see the expected buttons, refresh vSphere Web Client.
+2. Click Run DRS Now.
+Clicking the button forces vSphere DRS to immediately evaluate the cluster and provide
+recommendations instead of waiting for the standard 5 minutes before generating
+recommendations.
+3. Click the Summary tab and click the arrow next to vSphere DRS to expand the
+pane. The screenshot shows the expanded view of the vSphere DRS pane.
+Q1. Does the gauge show that the load is imbalanced?
+Yes. Because all the virtual machines are running on a single host and the running CPUBUSY
+instances create a large CPU load.
+4. Click the Monitor tab, on vSphere DRS, and select CPU Utilization.
+5. In the Sum of Virtual Machine CPU Utilization - Per Host pane, view the CPU consumption on
+each ESXi host and click each of the colored boxes to view the CPU consumption of each virtual
+machine.
+6. In the middle pane, select Recommendations and view the vSphere DRS recommendations.
+The screenshot shows a sample recommendation made by vSphere DRS to migrate a virtual
+machine from one host to another host.
+If vSphere DRS recommendations do not appear, refresh vSphere Web Client.
+7. Click Apply Recommendations.
+If your recommendations have expired, click Run DRS Now to generate new recommendations
+and apply them.
+If new recommendations do not appear, refresh your browser.
+You may need to click Run DRS Now and click Apply Recommendations the second time.
+8. On the Monitor tab and click Tasks & Events.
+9. Select Tasks in the middle pane.
+10. Click the Expand All icon.
+11. Monitor the Migrate virtual machine task until completion
+12. Click vSphere DRS and click Run DRS Now to force vSphere DRS to evaluate the cluster
+status. Q2. Is any recommendation shown?
+No. Because all recommendations are applied.
+13. Click the Summary tab and view the vSphere DRS pane.
+Q3. Does the gauge show that the load is balanced?
+The resource allocation balance improves after applying the vSphere DRS recommendations.
+14. Click the Monitor tab and click the vSphere DRS tab.
+15. Select CPU Utilization.
+The virtual machines should spread across the two ESXi hosts. You can refresh the screen to see
+the result.
+16. In each virtual machine console, press Ctrl+C to stop the CPUBUSY script. 17. Close the virtual
+machine consoles.
+Task 4: Create, Test, and Disable a VM-VM Affinity Rule
+You use VM-VM affinity rules to specify whether the selected individual virtual machines should run
+on the same host or be kept on separate hosts.
+1. In the Navigator pane, select SA-Compute-01 and click the VMs tab.
+2. Point to the gray row of column names, right-click the row, and select Show/Hide Columns.
+3. Select the Host check box from the list and click OK.
+The Host column appears in the table.
+You can drag the Host column to the left so that it is easily visible.
+
+4. Based on the information in the Name and Host columns, verify that all the virtual machines are
+not running on a single ESXi host.
+Having virtual machines reside on two different ESXi hosts is necessary to test the validity of the
+VM/Host rule that you create in the later steps. If you have one virtual machine on each ESXi
+host in the cluster, no action is necessary.
+5. In the Navigator pane, right-click SA-Compute-01 and select Settings.
+6. Select VM/Host Rules in the middle pane.
+7. In the VM/Host Rules pane, click Add. The Create VM/Host Rule dialog box appears.
+8. Configure the options for the VM/Host rule.
+a. In the Name text box, enter Colocate-Win10-VMs.
+b. Leave the Enable rule check box selected.
+c. From the Type drop-down menu, select Keep Virtual Machines Together.
+d. Click Add to add members.
+e. Select the check boxes for the Win10-02 and Win10-03 virtual machines and click OK.
+9. Click OK to close the Create VM/Host Rules dialog box.
+10. Click the Monitor tab and click vSphere DRS.
+11. Select Recommendations and click Run DRS Now.
+Q1. Do you see any recommendations, and why?
+Yes. vSphere DRS recommends that the two virtual machines be migrated to other hosts.
+The first recommendation moves Win10-03 off of the sa-esxi-01.vclass.local to maintain
+cluster balance.
+The second migration is based on the vSphere DRS affinity rule that you created. The migrate
+Win10-04 recommendation is assigned priority 1 because it is attempting to fix a broken
+affinity rule. Therefore, even if vSphere DRS was configured to Conservative, this
+recommendation would appear.
+12. Click Apply Recommendations and wait for the virtual machine migrations to complete.
+The virtual machines associated with your affinity rule should be migrated to one of the two hosts
+in the vSphere DRS cluster.
+13. Click the Monitor tab and click Tasks & Events to view the progress of the virtual machine
+migration and wait for its completion.
+14. Click the VMs tab.
+15. Click the Host column heading to sort the virtual machines by the ESXi host on which they
+reside The Win10-02 and Win10-03 virtual machines should be running on the same ESXi host.
+16. Click the Configure tab, and select VM/Host Rules in the middle pane.
+17. In the VM/Host Rules pane, select your affinity rule and click Edit above the rule.
+18. Deselect the Enable rule check box and click OK.
+Task 5: Create, Test, and Disable an Anti-Affinity Rule
+You create a vSphere DRS anti-affinity rule to force the specified virtual machines to be kept on
+separate hosts.
+1. In the VM/Host Rules pane, click Add.
+2. Configure the options for this VM/Host rule.
+a. In the Name text box, enter Separate-Win10-VMs.
+b. Keep the Enable rule check box selected.
+c. From the Type drop-down menu, select Separate Virtual Machines.
+d. Click Add.
+e. Select the check boxes for the Win10-02 and Win10-03 virtual machines own and click
+OK.
+
+3. Click OK to close the Create VM/Host Rules dialog box.
+4. Click the Monitor tab and click vSphere DRS.
+5. In Recommendations and click Run DRS Now.
+If new recommendations do not appear, refresh vSphere Web Client.
+The new recommendation is marked as priority 1 as a result of your vSphere DRS rules.
+6. Click Apply Recommendations.
+
+7. Click the Monitor tab and click Tasks & Events to view the progress of the virtual machine
+migration and wait for the virtual machine migration to complete before you proceed to the next
+step.
+8. Click the VMs tab.
+9. View the information shown in the Host column.
+As a result of your anti-affinity rule, you should see that the virtual machines associated with your
+anti-affinity rule are placed on two different ESXi hosts.
+10. Click the Configure tab and return to VM/Host Rules.
+11. In the VM/Host Rules pane, select the Separate-Win10-VMs rule.
+12. Click Delete above the pane and click Yes to verify the deletion.
+Task 6: Create, Test, and Disable a VM-Host Affinity Rule
+You use VM-Host affinity rules to specify whether the members of a selected virtual machine
+vSphere DRS group can run on the members of a specific host vSphere DRS group.
+1. In the middle pane, select VM/Host Groups.
+2. In the VM/Host Groups pane, click Add.
+3. In Create VM/Host Group dialog box, configure the options for this rule.
+a. In the Name text box, enter Win10-VMs.
+b. Verify that VM Group is selected from the Type drop-down menu.
+c. Click Add.
+d. Select the check boxes for the Win10-03 and Win10-04 virtual machines.
+e. Click OK.
+f. Click OK to close the dialog box.
+4. In the VM/Host Groups pane, click Add.
+5. When the Create VM/Host Group dialog box appears, configure the options.
+a. In the Name text box, enter Win10-Host.
+b. From the Type drop-down menu, select Host Group.
+c. Click Add.
+d. Select the check box for sa-esxi-02.vclass.local and click OK.
+e. Click OK to close the dialog box.
+6. Select VM/Host Rules in the middle pane.
+7. In the VM/Host Rules pane, click Add.
+8. When the Create VM/Host Rules dialog box appears, configure the options.
+a. In the Name text box, enter Run-only-on-host2.
+b. Keep the Enable rule check box selected.
+c. From the Type drop-down menu, select Virtual Machines to Hosts.
+d. From the VM Group drop-down menu, select Win10-VMs.
+e. Select Must run on hosts in group from the drop-down menu.
+f. From the Host Group drop-down menu, select Win10-Host.
+g. Click OK to close the dialog box.
+9. Click the Monitor tab and click vSphere DRS.
+10. Select Recommendations in the middle pane and click Run DRS Now.
+1. vSphere DRS recommends that one of your Win10 virtual machine be migrated to a
+different host due to the violation of your VM/Host affinity rule. The other Win10 virtual
+machine is already running on the second host.
+11. If there are recommendations, click Apply Recommendations.
+12. Click the Monitor tab and click Tasks & Events to view the progress of the virtual machine
+migration and wait for its completion.
+The Win10 virtual machines are migrated as necessary so that they both reside on the second
+ESXi host.
+13. Click the VMs tab.
+14. Click the Host column heading to sort the virtual machines by the ESXi host on which they reside.
+Your Win10-03 and Win10-04 virtual machines that were running on different ESXi hosts are
+both running on sa-esxi-02.vclass.local.
+15. In the Navigator pane, right-click the Win10-03 virtual machine and select Migrate. The Migrate
+wizard starts.
+
+16. On the Select the migration type page, click Change computer resource only and click Next.
+17. On the Select a compute resource page, click Clusters and click SA-Compute-01.
+
+In the Compatibility pane, you might notice the Virtual machine 'Win10-03' on host 'sa-esxi-
+01.	vclass.local' would violate a virtual machine - host affinity rule message.
+
+This issue is due to a conflict of the rules that you created and your migration attempt.
+18. Click Cancel to cancel the migration.
+19. Return to the Configure tab, and select VM/Host Rules in the middle pane.
+20. In the VM/Host Rules pane, select your Run-only-on-host2 rule and click Edit above the rule.
+21. Deselect the Enable rule check box and click OK.
+22. Leave vSphere Web Client open for the next lab.
+23. Inform your instructor that you have completed this lab. If prompted, continue to the next lab.

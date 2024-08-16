@@ -1,0 +1,72 @@
+Practical No: 02
+(A) Aim: Create a standard switch and a port group.
+Objective: In this lab, you perform the following tasks:
+1. View the Standard Switch Configuration
+2. Create a Standard Switch with a Virtual Machine Port Group
+3. Attach Your Virtual Machines to the New Virtual Machine Port Group
+4. In this lab, you use vSphere Client to perform the tasks.
+Steps:
+Task 1: View the Standard Switch Configuration
+You view the VMware vSphere® standard switch settings to ensure proper configuration of the
+default switch.
+1. Open your Firefox web browser, click vSphere Site-A on the favorite bar and select vSphere
+Client (SA-VCSA-01).
+2. Log in with the user name administrator@vsphere.local and the password VMware1!.
+3. vSphere Client opens to the Hosts and Clusters view in the Navigator pane.
+4. In the Navigator pane, click the arrows to expand the view.
+5. Select sa-esxi-01.vclass.local, click on the Configure tab, and select Virtual switches in the
+middle pane.
+6. In the Virtual switches pane, select the displayed virtual switch and review the information about
+the virtual switch.
+Task 2: Create a Standard Switch with a Virtual Machine Port Group
+You create a virtual machine port group on a standard switch, which handles network traffic at
+the host level in your vSphere environment.
+1. In the center pane, click Add Networking
+The sa-esxi-01.vclass.local - Add Networking wizard opens.
+2. On the Select connection type page, click Virtual Machine Port Group for a Standard Switch
+and click Next.
+3. On the Select target device page, click New standard switch and click Next.
+4. On the Create a Standard Switch page, click the Add adapters icon (the green plus sign).
+5. Select vmnic3 and click OK.
+6. Review the information for the new active adapter and click Next.
+7. On the Connection settings page, enter Production in the Network label text box and click Next.
+8. On the Ready to complete page, verify that the information is accurate and click Finish.
+9. In the Virtual switches pane, select vSwitch1.
+The vSwitch1 standard switch and the Production port group are added to the Virtual switches
+pane. You might need to click and move the adjustment slider that divides the Virtual switches
+pane and the detail pane to display the newly created standard switch. You can also minimize the
+Recent Tasks pane.
+10. Repeat task 2 for your second ESXi host sa-esxi-02.vclass.local
+Task 3: Attach Your Virtual Machines to the New Virtual Machine Port Group
+You attach the virtual machine to the virtual machine port group so that the virtual machine can
+communicate with other networked devices.
+1. In vSphere Client, click the Menu icon and select VMs and Templates.
+2. In the Navigator pane, click the arrows to expand the view of your Datacenter and folders.
+3. In the Navigator pane, select the Win10-01 virtual machine.
+When repeating this task, select the Win10-02 virtual machine.
+4. Ensure that Win10-01 is powered on.
+5. Right-click the virtual machine and select Edit Settings.
+6. In Edit Settings, find Network adapter 1.
+
+7. Click the downward arrow next to VM Network, and click Browse.
+8. In Select Network, select Production and click OK.
+9. Expand Network adapter 1 and verify that the Connect At Power On and Connected check
+boxes are selected.
+10. Click OK to close the Edit Settings window.
+11. Renew the virtual machine’s IP address.
+a. From the Summary tab, click Launch Web Console.
+b. You are logged in to the virtual machine as vclass\administrator with the password
+VMware1!.
+c. Right click the Windows icon and select Run.
+d. In the Run dialog box, enter cmd and click OK to open a Command Prompt window.
+e. At the command prompt, run the ipconfig /release command.
+f. Run the ipconfig /renew command.
+g. Record the virtual machine’s IP address.
+h. Record the virtual machine’s default gateway.
+12. At the virtual machine’s command prompt, ping the Production network’s default gateway
+172.20.11.10 to verify that the virtual machine is connected to the network.
+Your ping should be successful. If it is not successful, ask your instructor for help.
+13. Power on the Win10-02 virtual machine, and repeat steps 5 through 11.
+14. Close the Command Prompt and Web Console for both the virtual machines.
+15. Leave vSphere Client open for the next lab.
+16. Inform your instructor that you have completed this lab. If prompted, continue to the next lab.

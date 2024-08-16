@@ -1,0 +1,278 @@
+Practical No: 09
+Aim: Use vSphere HA functionality
+Objective: In this lab, you perform the following tasks:
+1. Create a Cluster Enabled for vSphere HA
+2. Add Your ESXi Hosts to the Cluster
+3. Test the vSphere HA Functionality
+4. View the vSphere HA Cluster Resource Usage
+5. Manage vSphere HA Slot Size
+6. Configure a vSphere HA Cluster with Strict Admission Control
+7. Prepare for the Next Lab
+In this lab, you use vSphere Web Client to perform the tasks.
+Steps:
+Task 1: Create a Cluster Enabled for vSphere HA
+You create a VMware vSphere® High Availability cluster to group multiple ESXi hosts together, to
+achieve higher levels of virtual machine availability than each ESXi host can provide individually.
+1. If vSphere Web Client is not active, open your Firefox web browser, click vSphere Site-A on the
+favorite bar, and select vSphere Web Client (SA-VCSA-01).
+2. Log in with the user name administrator@vsphere.local and the password VMware1!.
+3. Click the Home icon and select Hosts and Clusters.
+4. Right-click the SA-Datacenter object in the Navigator pane and select New
+Cluster. The New Cluster dialog box appears.
+5. Configure the new cluster.
+6. Leave the default settings for the other options and click OK.
+7. In the Recent Tasks pane, monitor the progress as the cluster is created.
+Task 2: Add Your ESXi Hosts to the Cluster
+You plan the resources and networking architecture of your cluster, add hosts to it, and specify the
+vSphere HA settings.
+1. Add both ESXi hosts to the SA-Compute-01 cluster.
+a. Drag sa-esxi-01.vclass.local to SA-Compute-01.
+b. Drag sa-esxi-02.vclass.local to SA-Compute-01.
+2. Click Yes in the Warning panel.
+Your existing resource pools collapse into the cluster root resource pool.
+3. Monitor the Recent Tasks pane and wait for the Configuring vSphere HA task to complete. If the
+tasks do not appear in the Recent tasks pane, you can find them in the Task Console.
+
+4. In the Navigator pane, select SA-Compute-01 and click the Monitor tab.
+5. Click vSphere HA and select Summary in the middle
+pane. The vSphere HA summary information appears.
+6. Record the name of the master host.
+Q1. Does the number of protected virtual machines match the number of powered-on virtual
+machines in the cluster?
+Yes. If both the hosts are added to the cluster and there are no errors on the cluster, the
+number of protected VMs equal the number of powered-on VMs.
+7. Select Heartbeat in the middle pane.
+Q2. How many datastores are used to monitor heartbeat?
+Two datastores. Both the datastores are shared by all of the hosts in the cluster. Therefore,
+they are automatically selected for heartbeating.
+8. In the middle pane, select Configuration Issues and review the errors that are displayed.
+At this point, each ESXi host has a single management network port. vSphere HA still works if an
+ESXi host is configured with one management network port, but a second management network
+port is necessary for management network port redundancy.
+9. Select sa-esxi-01.vclass.local in the Navigator pane and click the Configure tab.
+10. In the middle pane, navigate to Networking and select VMkernel adapters.
+11. Select the vMotion VMkernel adapter.
+12. Click the Edit Settings icon.
+13. On the Port properties page, ensure that the vMotion check box is selected and select the
+Management check box.
+14. Click OK.
+15. In the Navigator pane, right-click sa-esxi-01.vclass.local and select Reconfigure for vSphere HA.
+NOTE
+You might need to refresh vSphere Web Client to eliminate any obsolete alarm icons.
+16. Repeat step 9 through 15 for sa-esxi-02.vclass.local.
+17. In the Navigator pane, select SA-Compute-01 and click the Monitor tab.
+18. Click Issues and select All Issues from the middle pane.
+Q3. Are the previous management configuration issues still
+displayed? The management network error messages disappear
+Task 3: Test the vSphere HA Functionality
+You set up vSphere HA to monitor the cluster environment and detect hardware failures. When an
+ESXi host outage is detected, vSphere HA automatically restarts the virtual machines on the other
+ESXi hosts in the cluster.
+1. In the Navigator pane, select the master ESXi host that you recorded in task 2, step 6.
+2. Click the VMs tab and ensure that Virtual Machines is selected.
+3. Power on the Win10-02 virtual machine.
+4. Record the name of one or more powered-on virtual machines on the master host.
+5. In the Navigator pane, select SA-Compute-01.
+6. On the Monitor tab, click vSphere HA and select Summary from the middle pane.
+7. In the Virtual Machines pane, verify that the Protected field matches the number of powered-on
+VMs within the cluster and that the Unprotected field value is 0.
+Verifying that Virtual Machines Unprotected field value is 0 indicates that it is safe to reboot the
+host.
+8. Simulate a host failure by rebooting the master host in the cluster.
+IMPORTANT
+Ensure that you reboot the system. Do not shut down the system.
+a. Right-click the master ESXi host and select Power > Reboot.
+A warning message appears stating that you chose to reboot the host, which is not in
+maintenance mode.
+b. Enter Testing vSphere HA as the reason for rebooting and click OK.
+9. On the Monitor tab, click Tasks & Events and select Events in the middle pane.
+The cluster entries are sorted by time. Note the entries that appear when the host failure was
+detected.
+
+The initial messages from the hosts might show failures. These messages indicate that the virtual
+machines on the downed host have failed. The virtual machines take 1 to 2 minutes to
+successfully restart on the new host.
+10. Wait for an additional 1 to 2 minutes for the ESXi host that you rebooted in step 5 to enter an
+error state.
+11. In the Navigator pane, select the ESXi host that is in an error state, indicated with a red error icon
+12. Click the VMs tab.
+Q1. Do you see the virtual machines that were running on the original master ESXi host,
+which you recorded earlier?
+No. The virtual machines previously running on the original master ESXi host are running on
+the remaining host in the cluster.
+13. In the Navigator pane, select SA-Compute-01.
+14. On the Monitor tab, click vSphere HA.
+15. In the middle pane, select Summary.
+16. Monitor the original master ESXi host in the Navigator pane until it is fully running again. It
+might take 5 minutes for the original master host to become fully running.
+Task 4: View the vSphere HA Cluster Resource Usage
+You examine the CPU, memory, and storage I/O resource usage information of the cluster.
+1. On the Monitor tab, click Resource Reservation.
+2. Select CPU from the middle pane and record the information for the cluster.
+a. Total Reservation Capacity (GHz)
+b. Used Reservation (GHz)
+c. Available Reservation (GHz)
+3. In the bottom pane, verify that the CPU reservation is not set on the virtual
+machines. The Reservation column shows 0 (MHz).
+4. In the middle pane, select Memory and record the information for the cluster.
+
+• Total Reservation Capacity (GB)
+• Used Reservation (GB)
+• Available Reservation (GB)
+
+5. In the bottom pane, verify that the memory reservation is not set on the virtual machines. The
+Reservation column shows 0 (MB).
+Task 5: Manage vSphere HA Slot Size
+You configure admission control to ensure that sufficient resources are available in a cluster to
+provide failover protection and to ensure that the virtual machine resource reservations are respected.
+1. In the Navigation pane, right-click SA-Compute-01 and select Settings.
+2. Navigate to Services, and select vSphere Availability.
+3. In the right pane, click Edit.
+4. In the left pane, select Admission Control.
+5. In the Define host failover capacity by drop-down menu, select Slot Policy (powered-on VMs)
+and click OK.
+6. In the right pane, click the Monitor tab.
+7. Click vSphere HA, and select Summary from the middle pane.
+8. In the right pane, scroll down to the Advanced Runtime Info pane and record the slot information
+for this cluster.
+a. Slot size: CPU (MHz), Memory (MB)
+b. Total slots in cluster
+c. Used slots
+d. Available slots
+e. Failover slots
+9. In the Navigator pane, click the VMs and Templates icon.
+10. Expand SA-Datacenter > Lab VMs, and power on the Win10-04 virtual machine.
+11. Set the CPU reservation on the Win10-04 virtual machine.
+a. Right-click the Win10-04 virtual machine and select Edit Settings.
+b. Click the arrow next to CPU to expand the view.
+c. In the Reservation text box, enter 512 (MHz) and click OK.
+12. In the Navigator pane, click the Hosts and Clusters icon.
+
+13. In the Navigator pane select SA-Compute-01.
+14. Return to the Advanced Runtime Info pane and view the slot information for this cluster.
+a. In the Advanced Runtime Info pane, verify that the slot size for the CPU changed from
+the value recorded in step 8.
+b. Record the information shown in the Slot size text box. Slot size: CPU (MHz),
+Memory (MB)
+
+15. Use the vSphere HA slot size policy to enforce a slot size.
+a. In the Navigator pane, right-click SA-Compute-01 and select Settings.
+b. In the middle pane select vSphere Availability and click Edit. The Edit Cluster Settings
+wizard opens.
+c. In the left pane, select Admission Control.
+d. In the Define host failover capacity by pane, click Fixed slot size.
+e. In the CPU slot size text box, enter 300 (MHz) to change the CPU slot size.
+f. Click Calculate next to VMs requiring multiple slots, then click the View
+link. The VMs Requiring Multiple Slots window appears.
+g. Record the Required Slots value for the Win10-04 virtual machine.
+Because the CPU slot size has a fixed value of 300 MHz, the Win10-04 virtual
+machine with the 512 MHz CPU reservation uses two slots to power on.
+h. Click Close and click OK to exit the Edit Cluster Settings window.
+16. View the slot information for the SA-Compute-01 cluster.
+a. Return to the Advanced Runtime Info pane, record the information shown in the Slot size
+text box and compare with the values recorded earlier.
+
+17. Remove the vSphere HA fixed slot size setting.
+a. In the Navigator pane, right-click SA-Compute-01 and select Settings.
+b. In the middle pane, select vSphere Availability and click Edit. The Edit Cluster Settings
+wizard opens.
+c. In the left pane, select Admission Control.
+d. In the Define host failover capacity by pane, select Cover all powered-on virtual
+machines for the slot size policy.
+e. Click OK.
+18. Remove the CPU reservation on the Win10-04 virtual machine.
+a. In the Navigator pane, right-click the Win10-04 virtual machine and select Edit Settings.
+b. Click the arrow next to CPU to expand the view.
+c. Enter 0 (MHz) in the Reservation text box and click OK.
+Task 6: Configure a vSphere HA Cluster with Strict Admission Control
+You use admission control to impose constraints on resource usage and ensure that sufficient
+resources are available in a cluster to provide failover protection. Any actions violating the constraints
+are not permitted.
+In the previous task, when you configured the cluster under Define host failover capacity, you
+configured vSphere HA to calculate slots. vSphere HA calculates the space for a virtual machine to
+run based on the largest CPU and memory reservation across all powered-on virtual machines in the
+cluster. This feature is called strict admission control.
+1. Shut down the Guest OS for all the virtual machines.
+2. Verify the shut down operation and wait for the process to compete. Wait another minute for the
+system to release the memory.
+3. In the Navigator pane, select SA-Compute-01 and click the Summary tab.
+4. Record the memory information for this cluster.
+i. Capacity (total)
+ii. Used
+iii. Free
+Q1. Why is the free memory value for the cluster less than the total memory capacity
+value? Less memory is available because of the overhead needed to run VMkernel.
+VMkernel is holding back memory for its own use.
+
+5. Click the Monitor tab, click Resource Reservation, and select Memory in the middle pane.
+
+6. Assign a 2000 MB memory reservation to the Win10-02 virtual machine.
+a. In the lower pane, right-click the Win10-02 virtual machine and select Edit Resource
+Settings.
+b. In the Memory memory pane, enter 2000 (MB) in the Reservation text box and click OK.
+c. Repeat steps a through c to set the memory reservation on the Win10-03 and Win10-04
+virtual machines.
+
+7. On the Monitor tab, and click vSphere HA.
+8. Select Summary in the middle pane.
+9. In the Advanced Runtime Info pane, record the value shown in the Total slots in cluster text box.
+Q2. Why does vSphere Web Client report N/A as the value?
+vSphere Web Client reports N/A for the total number of slots because no virtual machines are
+powered on yet. The slot size calculation considers only virtual machines that are powered on.
+10. In the Navigator pane, right-click the Win10-02 virtual machine and select Power > Power On.
+
+11. Return to the Advanced Runtime Info pane of SA-Compute-01 and click Refresh in the lower-
+right corner of the pane.
+
+12. Record the slot size values that appear.
+13. View the effect that powering on this virtual machine has on your cluster.
+Q3. How many total slots in the cluster, used slots, available slots, and failover slots do you
+see?
+You should see 4 total slots in the cluster: one used slot, one available slots, and 2 failover
+slots. If you do not see 4 slots, refresh vSphere Web Client after 2 minutes and the numbers
+should get updated.
+NOTE
+The Advanced Runtime Info pane might display a smaller number of available slots in the cluster than
+you expect.
+Slot size is calculated using the largest reservations plus the memory overhead of any powered on
+virtual machines in the cluster. However, vSphere HA admission control considers only the resources
+on a host that are available for virtual machines. This amount is less than the total amount of physical
+resources on the host, because some overhead exists.
+Q4. How is the memory slot size calculated?
+Unlike the CPU slot size calculation, which is based solely on the largest CPU reservation, the
+calculation for memory slot size is based on the largest memory reservation, plus memory
+overhead.
+14. In the Navigator pane, right-click the Win10-04 virtual machine and select Power > Power On.
+15. Return to the Advanced Runtime Info pane of SA-Compute-01 and click Refresh.
+16. View the slot information.
+Q5. How many slots are available and what is the reason?
+Zero slots are available. Only two slots were available, the rest were marked as failover slots.
+Because two virtual machines were powered on, each using one of the available slots, no
+more slots are available.
+17. In the Navigator pane, right-click the Win10-03 virtual machine and select Power > Power On.
+18. Monitor the Recent tasks pane.
+Q6. Is your virtual machine allowed to power on, and what is the reason?
+The Win10-03 virtual machine is not allowed to power on. If a cluster does not have
+sufficient resources to provide failover protection, the virtual machine does not power on
+resulting in an error.
+Task 7: Prepare for the Next Lab
+You remove the memory reservations on virtual machines and disable admission control when they
+are no longer needed.
+1. Remove the memory reservation on each of the virtual machines.
+a. Right-click the Win10-02 virtual machine and select Edit Resource Settings.
+b. In the Memory section, enter 0 (MB) in the Reservation text box and click OK.
+
+c. Repeat steps a and b to remove the memory reservation on the Win10-03 and Win10-04
+virtual machines.
+
+2. In the Navigator pane, right-click the Lab Servers folder and select Remove from Inventory.
+3. Click Yes to verify the operation.
+4. Edit the settings of the cluster to allow the number of running virtual machines to exceed the
+failover capacity of the cluster.
+a. In the Navigator pane, right-click SA-Compute-01 and select Settings.
+b. In the middle pane, select vSphere Availability and click Edit. The Edit Cluster Settings
+wizard opens. c. In the left pane, click Admission Control. d. From the Define host failover
+capacity by drop-down menu, select Disabled. e. Click OK to commit your changes.
+5. Right-click the Win10-03 virtual machine in the Navigator pane and select Power > Power On.
+6. Leave vSphere Web Client open for the next lab.
+7. Inform your instructor that you have completed this lab. If prompted, continue to the next lab.

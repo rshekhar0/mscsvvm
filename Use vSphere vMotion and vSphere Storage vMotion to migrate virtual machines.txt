@@ -1,0 +1,157 @@
+Practical No: 05
+Aim: Use vSphere vMotion and vSphere Storage vMotion to migrate virtual machines.
+Objective: In this lab, you perform the following tasks:
+-
+1. Migrate Virtual Machine Files from Local Storage to Shared Storage
+2. Create a Virtual Switch and a VMkernel Port Group for vSphere vMotion Migration
+3. Prepare Virtual Machines to Demonstrate vSphere vMotion Migration
+4. Perform vSphere vMotion Migrations of Virtual Machines
+5. Perform Compute Resource and Storage Migrations
+In this lab, you use vSphere Client to perform the tasks.
+Steps:
+Task 1: Migrate Virtual Machine Files from Local Storage to Shared Storage
+With VMware vSphere® Storage vMotion®, you can migrate a virtual machine’s disk files from one
+datastore to another while the virtual machine is running.
+1. If vSphere Client is not active, open your Firefox web browser, click vSphere Site-A on the
+favorite bar, and select vSphere Client (SA-VCSA-01).
+2. Log in with the user name administrator@vsphere.local and the password VMware1!.
+3. Click the Menu icon and select VMs and Templates.
+4. Verify that the Win10-02 virtual machine is selected and powered on.
+5. On the Summary tab, in the Related Objects pane, record the name of the storage on which the
+Win10-02 virtual machine resides
+6. Right-click the Win10-02 virtual machine and select Migrate. The Migrate wizard opens.
+7. Select Change storage only on the Select a migration type page and click Next.
+8. On the Select Storage page, select iSCSI-Datastore as the destination storage for the virtual
+machine files. In the Compatibility pane, the Compatibility checks succeeded message appears.
+9. Click Next.
+10. On the Ready to complete page, review the information and click Finish.
+11. Monitor the Recent Tasks pane and wait for the virtual machine files relocation process to
+complete. This task takes several minutes to complete.
+12. Repeat step 5 and step 6 to verify that the Win10-02 virtual machine is on the new datastore,
+which is iSCSI-Datastore.
+Task 2: Create a Virtual Switch and a VMkernel Port Group for vSphere vMotion
+Migration You create a VMkernel port group virtual switch to move virtual machines from one host
+to another while maintaining continuous service availability.
+1. Click the Menu icon and select Hosts and Clusters.
+
+2. In the Navigator pane, expand SA-Datacenter > Lab Servers and select the host sa-esxi-
+01.vclass.local.
+
+3. Click the Configure tab.
+4. In the middle pane, navigate to Networking and select Virtual switches.
+5. Click the Add Networking icon to open the Add Networking wizard.
+6. Accept VMkernel Network Adapter in the Select connection type page and click Next.
+7. Select New standard switch in the Select target device page and click Next.
+8. Click the green + sign in the Create a Standard Switch page to add a physical adapter to the switch.
+9. Select vmnic2 as the vmnic for the vSphere vMotion network and click OK.
+10. Review the information shown and click Next.
+11. On the Port properties page for connection settings, enter vMotion in the Network label text box
+12. Select the vMotion check box, and click Next.
+13. On the IPv4 settings page, configure the IP address.
+a. Select Use static IPv4 settings.
+b. Enter 172.20.12.51 in the IPv4 address text box for the sa-esxi-01.vclass.local host.
+
+c. Enter 255.255.255.0 in the Subnet mask text box for the vMotion VMkernel port IPv4.
+d. Click Next.
+14. On the Ready to complete page, review the information and click Finish.
+15. In the Virtual Switches pane, verify that the new virtual switch for vSphere vMotion migration is
+listed.
+16. Repeat steps 2-15 for sa-esxi-02.vclass.local, using 172.20.12.52 for the vMotion VMkernel port
+IPv4 address in step 13 b. All other steps remain same.
+Task 3: Prepare Virtual Machines to Demonstrate vSphere vMotion Migration
+You prepare virtual machines to demonstrate live migration between hosts using vMotion.
+1. In the Navigator pane, expand the view of the inventory.
+2. Right-click the Win10-03 virtual machine and select Edit Settings.
+3. On the Virtual Hardware tab, select Client Device from the CD/DVD drive 1 drop-down menu.
+4. Click the arrow next to Network adapter 1 to expand the view.
+5. Verify that Production is selected from the drop-down menu.
+6. Verify that the Connect At Power On check box is selected for Network adapter 1.
+7. Click OK. 8. Repeat steps 2 through 7 for the Win10-04 virtual machine.
+8. Verify that the Win10-03 virtual machine is powered on.
+9. Right-click the Win10-03 virtual machine and select Open Remote Console.
+10. You are logged in as vclass\administrator with the password VMware1!
+11. Click the Search Windows icon in Windows Task bar and enter cmd to open a Command Prompt
+window.
+12. When the Command Prompt window opens, enter the ipconfig command and record the virtual
+machine’s default gateway IP address.
+13. Enter ping -t default_gateway IP address on the command line to start a continuous ping.
+Task 4: Perform vSphere vMotion Migrations of Virtual Machines
+You perform live migration of virtual machines residing on a shared datastore that is accessible to
+both the source and the target ESXi hosts.
+1. Leave the virtual machine console open and return to vSphere Client.
+
+2. Migrate the Win10-03 virtual machine from host sa-esxi-01.vclass.local to host sa-
+esxi02.vclass.local.
+
+a. In the Navigator pane, right-click the Win10-03 virtual machine and select Migrate.
+b. On the Select a migration type page, accept Change compute resource only and click Next.
+
+c. On the Select a compute resource page, select sa-esxi-02.vclass.local. sa-esxi-
+02.vclass.local is the destination host to which you migrate the Win10-03 virtual machine.
+
+The migration requirements are validated. If the validation does not succeed, you receive
+warning or error messages. You cannot continue with the migration until the errors are
+resolved.
+d. Click Next
+e. On the Select networks page, ensure that Production is selected from the Destination
+Network drop-down menu and click Next.
+f. Leave Schedule vMotion with high priority (recommended) selected on the Select
+vMotion priority page and click Next.
+g. On the Ready to complete page, review the information and click Finish.
+3. Return to the Win10-03 virtual machine console and monitor that no pings are dropped during the
+migration.
+a. Monitor the console for 1 to 2 minutes. If the Win10-03 virtual machine console is
+disconnected, reopen the console.
+
+4. Press Ctrl+C to stop the ping.
+5. Close the Command Prompt window.
+6. Close the Win10-03 virtual machine console.
+7. Verify that the Win10-04 virtual machine is powered on.
+8. In the Navigator pane, select Win10-04.
+9. On the Summary tab, verify that Win10-04 is on the sa-esxi-02.vclass.local host.
+
+10. Migrate the Win10-04 virtual machine from host sa-esxi-02.vclass.local to host sa-
+esxi01.vclass.local.
+
+a. In the Navigator pane, drag the Win10-04 virtual machine from sa-esxi-02.vclass.local to
+sa-esxi-01.vclass.local. The Migrate wizard opens.
+b. On the Select a migration type page, select Change compute resource only and click Next.
+c. On the Select a compute resource page, select sa-esxi-01.vclass.local and click Next.
+d. On the Select networks page, verify that Production is selected from the Destination
+Network drop-down menu and click Next.
+e. On the Select vMotion priority page, leave Schedule vMotion with high priority
+(recommended) selected and click Next.
+f. On the Ready to complete page, review the information and click Finish.
+11. When the migration tasks are completed, view the Navigator pane to verify that Win10-04 is
+under sa-esxi-01.vclass.local and Win10-03 is under sa-esxi-02.vclass.local.
+Task 5: Perform Compute Resource and Storage Migrations
+You can migrate virtual machines not only to a different host but also to a different datastore across
+storage accessibility boundaries.
+1. In the Navigator pane, right-click the Photon-FromLib virtual machine and select Migrate.
+2. On the Select a migration type page, click Change both compute resource and storage and click
+Next.
+
+3. On the Select compute resource page, expand SA-Datacenter > Lab Servers and select saesxi-
+01.vclass.local.
+
+a. NOTE
+b. If the Compatibility alarm – No guest heartbeats are being received message appears,
+ignore it. This message does not affect a successful migration.
+
+4. Click Next.
+5. On the Select storage page, select iSCSI-Datastore and click Next.
+
+6. On the Select network page, verify that Production is selected from the Destination Network drop-
+down menu and click Next.
+
+7. On the Select vMotion priority page, leave Schedule vMotion with high priority (recommended)
+selected and click Next.
+8. On the Ready to complete page, review the information and click Finish.
+9. In the Recent Tasks pane, monitor the progress of the virtual machine migration.
+10. When the migration task is completed, view the Navigator pane to verify that the Photon-From
+Lib virtual machine is listed under your sa-esxi-01.vclass.local ESXi host.
+11. Right-click Photon-From Lib and select Power > Shut Down Guest OS.
+NOTE
+If your Shut Down Guest OS option is dimmed, refresh the vSphere Client page and try again.
+12. Click Yes to verify the shut down.
+13. Inform your instructor that you have completed this lab. If prompted, continue to the next lab.

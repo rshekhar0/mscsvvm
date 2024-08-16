@@ -1,0 +1,111 @@
+
+Practical No: 2
+
+(B) Aim: Configure access to an iSCSI datastore.
+Objective: In this lab, you perform the following tasks:
+1. Validate an Existing ESXi Host iSCSI Configuration
+2. Add a VMkernel Port Group to a Standard Switch
+3. Configure the iSCSI Software Adapter
+4. Connect the iSCSI Software Adapters to Storage
+In this lab, you use vSphere Client to perform the tasks.
+Steps:
+Task 1: Validate an Existing ESXi Host iSCSI Configuration
+You use VMkernel interfaces to provide network connectivity for your hosts and to handle other types
+of traffic, such as VMware vSphere® vMotion® traffic, storage traffic, and VMware vSphere® Fault
+Tolerance traffic. In this task, you validate an existing VMkernel and iSCSI software adapter
+configuration on your first host.
+1. In vSphere Client, click the Menu icon and select Hosts and Clusters.
+2. In the Navigator pane, select sa-esxi-01.vclass.local.
+3. In the right pane, the Configure tab is open.
+4. In the center pane, select Storage > Storage Adapters.
+5. In the Storage Adapters pane, validate iSCSI Software Adapter.
+a. Scroll and select the existing iSCSI software adapter.
+Verify that Online is shown in the Status column.
+6. In the Storage Adapters pane, open the Properties tab.
+a. Record the storage adapter properties.
+
+• Status
+Under General
+• Name
+• SCSI Name
+Under Authentication
+• Method
+
+7. Open the Devices tab and verify that MSFT iSCSI Disk devices are present.
+8. Open the Dynamic Discovery tab.
+
+• Record the iSCSI Server IP address
+
+9. Open the Static Discovery tab.
+
+• Record the second iSCSI Server IP address and port
+
+10. Open the Network Port Binding tab.
+
+a. In the Port Group column, click Management Network (vSwitch0).
+b. Click View Details.
+The Details for vmk0 page opens.
+The information that you recorded in step 8 and step 9 can also be seen in the Details
+for vmk0 page.
+c. Click Close.
+Task 2: Add a VMkernel Port Group to a Standard Switch
+In this task you configure a VMkernel Port Group on your second host.
+1. In the Navigator pane, select sa-esxi-02.vclass.local.
+2. On the Configure tab, select Networking > VMkernel adapters.
+3. Click the Add Networking icon.
+a. The Add Networking wizard appears.
+4. On the Select connection type page, verify that VMkernel Network Adapter is selected and
+click Next.
+5. On the Select target device page, click Select an existing standard switch.
+6. Click Browse and select vSwitch0.
+7. Click OK.
+8. Click Next.
+9. On the Port properties page, configure the VMkernel network settings.
+a. Enter IP Storage in the Network label text box and click Next.
+b. On the IPv4 settings page, click Use static IPv4 settings.
+c. In the IPv4 address text box, enter 172.20.10.62.
+d. Enter 255.255.255.0 in the Subnet mask text box.
+e. Verify that the default gateway is set to 172.20.10.10.
+f. Click Next.
+10. On the Ready to complete page, click Finish.
+Task 3: Configure the iSCSI Software Adapter
+You configure the iSCSI software adapter on your second ESXi hosts and verify its iSCSI name.
+1. In the Navigator pane, select ESXi host sa-esxi-02.vclass.local.
+2. On the Configure tab, navigate to Storage and select Storage Adapters.
+3. Click the Add Software Adapter icon (the plus
+sign). The Add Software Adapter wizard opens.
+4. Add software iSCSI adapter is selected.
+5. Click OK.
+6. In the Storage Adapters list, scroll down and select the newly created iSCSI software adapter.
+7. In the Adapter pane, click the Properties tab.
+8. Verify that the adapter status is Enabled.
+9. Click Edit next to General.
+10. Verify that the name shown in the iSCSI Name text box matches
+iqn.1998-01.com.vmware:sa-esxi-02-########.
+# represents characters that might change.
+
+11. Click OK.
+Task 4: Connect the iSCSI Software Adapters to Storage
+You connect the iSCSI adapters on the ESXi hosts to directly connect to a remote iSCSI target on
+the IP network.
+1. In the Storage Adapter pane, click the Network Port Binding tab.
+2. Click the Add icon (the plus sign).
+3. Select the IP Storage check box and click OK.
+4. In the Storage Adapter pane, click Dynamic Discovery, and click Add.
+5. On the Add Send Target Server page, enter 172.20.10.10 for the iSCSI server name in
+the iSCSI Server text box and click OK.
+6. Monitor the Recent Tasks pane and wait for the task to complete.
+7. Click the Rescan Storage Adapters icon.
+8. When the rescan storage message appears, click OK and wait for the task to complete.
+9. In the Storage Adapter pane, click the Devices tab.
+
+10. Verify that five LUNs appear and record the values.
+
+• LUN number
+• Capacity
+• Operational state
+• Hardware Acceleration
+The LUNs are hosted by an iSCSI provider and are used to create datastores in later labs.
+11. Compare the results for both the hosts.
+12. Leave vSphere Client open for the next lab.
+13. Inform your instructor that you have completed this lab. If prompted, continue to the next lab.

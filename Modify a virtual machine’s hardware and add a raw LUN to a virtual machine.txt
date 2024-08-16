@@ -1,0 +1,118 @@
+(B) Aim: Modify a virtual machine’s hardware and add a raw LUN to a virtual machine.
+Objective: In this lab, you perform the following tasks:
+1. Clone a Powered-On VM
+2. Increase the Size of a VMDK File
+3. Adjust Memory Allocation on a VM
+4. Rename a VM in the vCenter Server Appliance Inventory
+5. Add and Remove a Raw LUN on a VM
+Steps:
+Task 1: Clone a Powered-On Virtual Machine
+You clone a virtual machine to create a new virtual machine with the same virtual hardware,installed
+software, configuration, and other properties. The original virtual machine can be powered on, off, or
+suspended.
+1. If vSphere Client is not active, open your Firefox web browser, click vSphere Site-A on the
+favorite bar, and select vSphere Client (SA-VCSA-01).
+2. Log in with the user name administrator@vsphere.local and the password VMware1!.
+3. In vSphere Client, click the Menu icon, and select VMs and Templates.
+4. In the Navigator pane, expand the SA-Datacenter and the Lab VMs folder.
+5. Ensure the Win10-02 virtual machine is powered on.
+6. Right-click the Win10-02 virtual machine and select Clone > Clone to Virtual
+Machine. The Clone Existing Virtual Machine wizard starts.
+7. On the Select a name and folder page, enter Win10-Clone in the Virtual machine text box.
+8. Expand SA-Datacenter and select Lab VMs from the Select a location for the virtual machine
+pane and click Next.
+9. On the select a compute resource page, expand Lab Servers and select sa-esxi-02.vclass.local
+from the Select a compute resource pane and click Next.
+10. On the Select storage page, select iSCSI-Datastore.
+11. Select Thin Provision from the Select virtual disk format drop-down menu and click Next.
+12. On the Select clone options page, select the Customize the operating system and the Power on
+virtual machine after creation check boxes.
+13. Click Next.
+14. On the Customize guest OS page, select Win10-CustomSpec and click Next.
+15. On the Ready to complete page, review the information and click Finish.
+16. Monitor the progress of the task in the Recent Tasks
+pane. This task takes 10 minutes to complete.
+17. Open a console for the Win10-Clone virtual machine.
+a. In the Navigator pane of vSphere Client, right-click the Win10-Clone virtual machine
+and select Open Remote Console.
+When the virtual machine console opens, you might see the Windows setup process
+continuing. It automatically reboots a few times to complete the process.
+b. You are logged in as vclass\administrator with the password VMware1!.
+c. Verify that VMware Tools is installed by navigating to the Windows system tray at the
+lower-right corner to show hidden icons and double-click the VMware Tools icon.
+
+18. Close the virtual machine console.
+Task 2: Increase the Size of a VMDK File
+You increase the size of the virtual machine disk (VMDK) and configure the guest operating system
+to detect the additional space.
+1. Right-click your Win10-Clone virtual machine in the Navigator pane and select Edit Settings.
+2. On the Virtual Hardware tab, record the size (GB) of Hard Disk 1.
+3. In the Hard disk 1 text box, increase the disk size by 2 GB and click OK.
+4. On the Win10-Clone Summary tab, select Launch Web Console.
+5. Configure the Win10-Clone virtual machine’s guest operating system to detect and extend the
+increased disk space.
+a. Right-click Start, then click on Disk Management.
+b. In the lower-right pane, verify that the 2 GB unallocated disk space is discovered.
+
+If the 2.00 GB of unallocated space has not been discovered, click the Action menu, and select
+Rescan Disks.
+c. Right-click the C: drive and select Extend
+Volume. The Extend Volume wizard starts.
+d. Click Next.
+e. On the Select Disks page, verify that Disk 0 is selected in the Selected pane and click Next.
+f. On the Completing the Extend Volume Wizard page, review the information and click
+Finish.
+
+6. In the Disk Management window, verify that the local C: drive (Disk 0) is extended.
+7. Record the value for the total size of the C: drive.
+8. Compare the value with the value that you recorded in step 2.
+9. Close the Disk Management window.
+10. Close the virtual machine console.
+Task 3: Adjust Memory Allocation on a Virtual Machine
+You add, change, or configure virtual machine memory resources or options to enhance virtual
+machine performance.
+1. Right-click the Win10-Clone virtual machine and select Power > Shut Down Guest OS from the
+Navigator pane.
+2. Click Yes to verify the shutdown.
+3. On the Win10-Clone Summary tab expand the view of the VM Hardware pane and record the
+4. amount (GB) of active memory.
+5. Right-click the Win10-Clone virtual machine in the Navigator pane, and select Edit Settings.
+6. Enter 2500 in the Memory text box and verify that MB is selected from the drop-down menu.
+7. Click OK.
+8. Verify that the memory is increased on the virtual machine’s Summary tab.
+Task 4: Rename a Virtual Machine in the vCenter Server Appliance Inventory
+You rename an existing virtual machine in the vCenter Server Appliance inventory.
+1. In the Navigator pane, right-click the Win10-Clone virtual machine and select Rename.
+2. In the Enter the new name text box, enter Win10-05.
+3. Click OK.
+4. In the Navigator pane, select Win10-05 virtual machine and click the Datastores tab.
+5. Right-click iSCSI-Datastore and select Browse Files.
+Task 5: Add and Remove a Raw LUN on a Virtual Machine
+You use raw device mapping (RDM) to enable a virtual machine to access a LUN directly.
+1. Click the VMs and Templates icon.
+2. Right-click the Win10-05 virtual machine and select Edit Settings.
+3. Select RDM Disk from the New device drop-down menu.
+4. In the Select Target LUN dialog box, select LUN 4 and click OK.
+5. Click the arrow next to New Hard disk to expand the view.
+6. In the Location drop-down menu, verify that Store with the virtual machine is selected.
+7. Select Virtual from the Compatibility Mode drop-down menu, and click OK.
+8. Verify that the guest operating system can see the new disk.
+a. In the Navigator pane, right-click the Win10-05 virtual machine and select Power >
+Power On.
+b. Right-click the Win10-05 virtual machine and select Open Remote Console.
+c. You are logged in as vclass\administrator with the password VMware1!.
+d. Right-click Start, then click on Disk Management.
+e. When the Initialize Disk wizard starts, click Cancel.
+f. Verify that Disk 1 is listed.
+g. Close the Disk Management window.
+9. Close the virtual machine console and the Firefox browser tab.
+10. In vSphere Client, remove the RDM hard disk from the Win10-05 virtual machine.
+a. Right-click the Win10-05 virtual machine and select Power > Shut Down Guest OS.
+b. Click Yes to verify the shut down and wait for the virtual machine to power off.
+c. Right-click the Win10-05 virtual machine and click Edit Settings.
+
+d. Point to Hard disk 2 in the edit setting dialog box.
+e. Click the x icon that appears at the right side of the row for Hard disk 2.
+f. Select the Delete files from datastore check box and click OK.
+11. Leave vSphere Client open for the next lab.
+12. Inform your instructor that you have completed this lab. If prompted, continue to the next lab.

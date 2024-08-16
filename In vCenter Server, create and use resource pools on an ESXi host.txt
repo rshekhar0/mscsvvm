@@ -1,0 +1,101 @@
+Practical No: 07
+(A) Aim: In vCenter Server, create and use resource pools on an ESXi host
+Objective: In this lab, you perform the following tasks:
+1. Create CPU Contention
+2. Create Resource Pools
+3. Verify Resource Pool Functionality
+In this lab, you use vSphere Web Client to perform the tasks.
+Steps:
+Task 1: Create CPU Contention
+You use a tool to create CPU contention in your lab environment for testing. You force the virtual
+machines to compete for and share the limited logical CPU resources on the ESXi host, which might
+lead to performance degradation.
+1. Open your Firefox Web browser, click vSphere Site-A on the favorite bar, and select vSphere
+Web Client (SA-VCSA-01).
+2. Log in with the user name administrator@vsphere.local and the password VMware1!.
+3. vSphere Web Client opens to Hosts and Clusters.
+
+4. In the Navigator pane, expand SA-Datacenter, the Lab Servers folder, and your ESXi hosts.
+
+5. Verify that the Win10-02 and Win10-04 virtual machines are powered on and running on sa-esxi-
+01.vclass.local.
+
+6. If necessary, migrate the virtual machines to sa-esxi-01.vclass.local.
+7. Start the CPUBUSY script on the virtual machine desktops.
+a. Right-click on Win10-02 and select Open Console.
+b. Select Web Console, then click Continue in the Open Console panel.
+c. You are logged in as vclass\administrator with the password VMware1!.
+d. On the desktop, right-click CPUBUSY and select Open with Command Prompt. This
+script runs continuously. It stabilizes in 1 to 2 minutes. This script repeatedly does
+floating-point computations. The script displays the duration (wall-clock time) of a
+computation, for example, I did three million sines in # seconds.
+e. Repeat steps a through d on the Win10-04 virtual machine. You can use the number of
+seconds reported as a performance estimate. The program should run at about the same
+rate in each virtual machine.
+
+8. In the Navigator pane, right-click the Win10-02 virtual machine and select Edit Settings.
+9. On the Virtual Hardware tab, click the arrow next to CPU.
+10. In the Scheduling Affinity text box, enter 1.
+a. This affinity setting forces the Win10-02 virtual machine to run only on logical CPU 1
+11. Click OK.
+
+a. CAUTION
+b. CPU affinity is used mainly to create CPU contention for training purposes. The use
+of this feature in a production environment is strongly discouraged.
+
+12. Repeat steps 8 through 11 for the Win10-04 virtual machine.
+13. Allow the CPUBUSY script to run for 1 or 2 minutes.
+Task 2: Create Resource Pools
+You use resource pools to delegate control over resources of the host or a cluster and to
+compartmentalize all resources in a cluster.
+1. Right-click sa-esxi-01.vclass.local in the Navigator pane and select New Resource Pool
+2. Assign properties to the resource pool.
+3. Click OK.
+4. In the Navigator pane, right-click sa-esxi-01.vclass.local and select New Resource Pool.
+5. Assign properties to the resource pool.
+
+6. Click OK.
+Task 3: Verify Resource Pool Functionality
+You assign virtual machines to resource pools with different resource settings to monitor and
+compare the performance differences.
+1. Select the rp-Test resource pool in the Navigator pane and click the Summary tab.
+2. In the Resource Settings pane, click the arrow next to CPU to expand the
+view. Q1. What is the number of shares for this resource pool?
+1. 2,000.
+
+3. Select rp-Production in the Navigator pane and click the Summary tab.
+4. View the Resource Settings pane.
+
+2. 8,000
+
+5. Drag the Win10-02 virtual machine to the rp-Production resource pool.
+6. Drag the Win10-04 virtual machine to the rp-Test resource pool.
+
+7. Open each virtual machine console to monitor the results of the CPUBUSY script.
+Allow several minutes for CPU contention to occur. If you are logged out of the console due to
+inactivity, log in again as vclass\administrator with the password VMware1!.
+Q3. What is the difference in performance between the two virtual machines?
+3. The rp-Test resource pool, and the virtual machine in it, have only one-fourth of the
+
+CPU shares that the rp-Production resource pool has. So the virtual machine in the rp-
+Test resource pool receives only one-fourth of the CPU cycles of the logical CPU to
+
+which the virtual machines are pinned.
+
+8. In vSphere Web Client, change the CPU shares of the rp-Test resource pool from Low to
+Normal.
+a. Right-click the rp-Test resource pool in the Navigator pane and click Settings.
+b. Verify that CPU Resources is selected and click Edit.
+c. Select Normal from the Shares drop-down menu and click OK.
+9. In each virtual machine console, allow the script to run for a few minutes and compare the
+performance of the CPUBUSY script on each virtual machine.
+As contention diminishes on the Win10-04 virtual machine, you see a difference in
+performance.
+10. Repeat step 8 to change CPU shares for the rp-Production resource pool from High to Normal. As
+contention diminishes, you see performance balance between the two virtual machines.
+11. Press Ctrl+C in the Command Prompt window to stop the CPUBUSY script in each virtual
+machine console.
+12. Close the Win10-02 and Win10-04 consoles.
+13. Click the Home icon and select Home.
+14. Leave vSphere Web Client open for the next lab.
+15. Inform your instructor that you have completed this lab. If prompted, continue to the next lab.

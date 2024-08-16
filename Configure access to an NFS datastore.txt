@@ -1,0 +1,37 @@
+Practical No:3
+
+(B) Aim: Configure access to an NFS datastore.
+Objective: In this lab, you perform the following tasks:
+1. Configure access to an NFS datastore
+2. View NFS Storage information
+Steps:
+Task 1: Configure Access to NFS Datastores
+You mount an NFS share to your ESXi hosts and use it as a datastore.
+1. If vSphere Client is not active, open your Firefox Web browser, click vSphere Site-A on the
+favorite bar, and select vSphere Client (SA-VCSA-01).
+2. Log in with the user name administrator@vsphere.local and the password VMware1!.
+3. In vSphere Client, click the Menu icon and select Storage.
+4. Right-click SA-Datacenter and select Storage > New
+Datastore. The New Datastore wizard starts.
+5. On the Type page, select NFS and click Next.
+6. On the Select NFS version page, select NFS 4.1 and click Next.
+7. On the Name and configuration page, enter NFS-Datastore in the Datastore name text box.
+8. Enter /NFS-Data as the folder name in the Folder text box.
+9. Enter 172.20.10.10 as the NFS server name in the Server text box.
+10. Click the Add server icon (the green plus sign).
+11. Validate that 172.20.10.10 is added to the Servers to be added box and click Next.
+12. On the Configure Kerberos authentication page, accept the default, and click Next.
+13. On the Host accessibility page, select both the ESXi hosts and click Next.
+14. On the Ready to complete page, verify the NFS settings and click Finish.
+15. Verify that your NFS datastore is listed in the Navigator pane.
+Task 2: View NFS Storage Information
+You view information about your NFS storage and the contents in the NFS datastore.
+1. Select your NFS-Datastore datastore in the Navigator pane.
+2. Click the Summary tab.
+3. View the content pane and record the information about the datastore.
+a) Datastore type
+b) Capacity of the datastore
+c) Free space of the datastore
+d) Used space of the datastore
+4. Leave vSphere Client open for the next lab.
+5. Inform your instructor that you have completed this lab. If prompted, continue to the next lab.

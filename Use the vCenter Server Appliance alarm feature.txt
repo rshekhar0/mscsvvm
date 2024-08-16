@@ -1,0 +1,94 @@
+Practical No: 08
+Aim: Use the vCenter Server Appliance alarm feature
+Objective: In this lab, you will perform the following tasks
+1. Create a Virtual Machine Alarm to Monitor a Condition
+2. Create a Virtual Machine Alarm to Monitor an Event
+3. Trigger Virtual Machine Alarms and Acknowledge the Alarms
+4. Disable Virtual Machine Alarms
+In this lab, you use vSphere Web Client to perform the tasks.
+Steps:
+Task 1: Create a Virtual Machine Alarm to Monitor a Condition
+You create and use alarms to respond to selected events, conditions, and states that occur with objects
+in the vCenter Server inventory.
+1. If vSphere Web Client is not active, open your Firefox web browser, click vSphere Site-A on the
+favorite bar, and select vSphere Web Client (SA-VCSA-01).
+2. Log in with the user name administrator@vsphere.local and the password VMware1!.
+3. Click the Home icon and select Hosts and Clusters
+
+4. In the Navigator pane, right-click the Win10-02 virtual machine and select Alarms > New Alarm
+Definition to open the New Alarm Definition wizard.
+NOTE
+Because you are creating an alarm for the Win10-02 virtual machine, this alarm monitors only
+that virtual machine. If you set the alarm on an object higher in the vCenter Server inventory, the
+alarm applies to multiple virtual machines. For example, if you create an alarm on the vCenter
+Server Appliance object, the alarm applies to all the virtual machine
+5. Enter VM CPU Usage - Win10-02 in the General page Alarm name text box and click Next.
+6. On the Triggers page, click Add (the green plus sign) to add the trigger conditions.
+The screenshot shows the results of adding the trigger conditions.
+7. Click Next
+8. In the Actions page, click Add (the green plus sign) to configure the action settings.
+9. Click Finish.
+10. In the Navigator pane, select the Win10-02 virtual machine and click the Monitor tab.
+11. On the Issues tab and select Alarm Definitions.
+9. Verify that the VM CPU Usage - Win10-02 alarm appears in the alarm list for the Win10-02
+Virtual machine.
+Task 2: Create a Virtual Machine Alarm to Monitor an Event
+You set up general alarm settings, alarm triggers, trigger reporting, and alarm actions to monitor and
+react to a specified event.
+1. In the Navigator pane, select SA-Datacenter, and click the Monitor tab.
+2. On the Issues tab and select Alarm Definitions.
+3. Click Add (the green plus sign) to add an alarm for the data
+center. The New Alarm Definition wizard starts.
+4. Configure the alarm settings in the New Alarm Definition wizard General page.
+5. Click Next
+6. On the Triggers page, click Add (the green plus sign) in the pane named Trigger if ANY of the
+following events occur.
+7. Select VM suspended from the Event drop-down menu.
+8. Click Add (the green plus sign) to specify the conditions for the alarm trigger to fire.
+9. Click Next.
+10. Leave the default settings in the Actions page and click Finish.
+11. Verify that the VM Suspended - Win10-02 alarm appears in the alarm list for the data center.
+Task 3: Trigger Virtual Machine Alarms and Acknowledge the Alarms
+You acknowledge an alarm to discontinue it and inform others that you are taking ownership of the
+issue. Your acknowledged alarms are visible in the system. The alarms are neither cleared nor reset.
+1. Power on the Win10-02 virtual machine.
+2. In the Navigator pane, select the Win10-02 virtual machine.
+3. On the Monitor tab, click Issues and select Triggered Alarms. The triggered alarms appear in this
+pane.
+4. Open the console for the Win10-02 virtual machine.
+5. You are logged in to the Win10-02 virtual machine as vclass\administrator with the password
+VMware1!.
+6. Right-click CPUBUSY and select Open with Command Prompt.
+7. Wait for at least 30 seconds before the alarm is triggered and the virtual machine is suspended
+8. Return to vSphere Web Client, refresh the Triggered Alarms pane and verify that the VM Suspended
+- Win10-02 alarm is triggered.
+An entry for this alarm should appear in the Triggered Alarms list
+9. Right-click the VM Suspended - Win10-02 alarm and select Reset to Green.
+10. On the Monitor tab, click Tasks & Events and select Events in the middle pane. The description
+Manually cleared alarm ‘VM Suspend - Win10-02 ’ from Red should appear in the list.
+11. In the Navigator pane, right-click the suspended Win10-02 virtual machine and select Power >
+Power On.
+12. Reload and open the Win10-02 virtual machine console.
+13. Press Ctrl+C at the command prompt to stop the CPUBUSY script.
+
+14. Close the Win10-02 virtual machine console.
+15. Right-click the Win10-02 virtual machine and select Power > Shut Down Guest OS.
+16. Click Yes to verify the Guest Shut Down operation.
+17. Verify that the red alert icon is removed from the Win10-02 virtual machine in the Navigator pane.
+Task 4: Disable Virtual Machine Alarms
+You disable system built-in alarms or the alarms that you defined for specific objects.
+1. Disable the VM CPU Usage - Win10-02 alarm.
+a. In the Navigator pane, select the Win10-02 virtual machine.
+b. On the Monitor tab, click Issues and select Alarm Definitions.
+c. Select the VM CPU Usage - Win10-02 alarm in the list. The VM CPU Usage - Win10-02
+pane appears in the right pane.
+d. Click Edit.
+e. On the General page, deselect the Enable this alarm check box and click Finish
+2. Disable the VM Suspended - Win10-02 alarm.
+a. Select SA-Datacenter in the Navigator pane.
+b. On the Monitor tab in the middle pane, click Issues and select Alarm Definitions.
+c. Enter VM suspended in the search box.
+d. Right-click the VM Suspended - Win10-02 alarm in the list and select Edit.
+e. On the General page, deselect the Enable this alarm check box and click Finish.
+3. Leave vSphere Web Client open for the next lab.
+4. Inform your instructor that you have completed this lab. If prompted, continue to the next lab.

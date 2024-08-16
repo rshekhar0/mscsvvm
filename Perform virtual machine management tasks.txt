@@ -1,0 +1,201 @@
+Practical No: 06
+Aim: Perform virtual machine management tasks
+Objective: In this lab, you perform the following tasks:
+1. Unregister a Virtual Machine from the vCenter Server Appliance Inventory
+2. Register a Virtual Machine in the vCenter Server Appliance Inventory
+3. Unregister and Delete Virtual Machines from the Datastore
+4. Take Snapshots of a Virtual Machine
+5. Add Files and Take Another Snapshot of a Virtual Machine
+6. Revert the Virtual Machine to a Snapshot
+7. Delete an Individual Snapshot
+8. Delete All Snapshots In this lab, you use vSphere Client to perform the tasks.
+Steps:
+Task 1: Unregister a Virtual Machine from the vCenter Server Appliance Inventory
+You unregister a virtual machine from the vCenter Server Appliance inventory. Unregistering does
+not delete the virtual machine from the datastore.
+1. If vSphere Client is not active, open your Firefox web browser, click vSphere Site-A on the
+favorite bar, and select vSphere Client (SA-VCSA-01).
+
+2. Log in with the user name administrator@vsphere.local and the password VMware1!.
+3. Click the Menu icon and select VMs and Templates.
+4. Select theWin10-05 virtual machine and click the Datastores tab.
+5. Record the VMFS datastore name where the Win10-05 virtual machine resides.
+6. Verify that the Win10-05 virtual machine is powered off.
+7. Right-click Win10-05 and select Remove from Inventory.
+a. CAUTION
+b. Do not select Delete from Disk. This operation is not recoverable in your lab environment.
+8. Click Yes to verify the removal.
+9. Verify that the Win10-05 virtual machine no longer appears in the Navigator.
+10. If needed, click the Refresh icon for vSphere Client.
+11. In the Navigator pane, click the Storage icon and expand the view.
+12. Click the datastore name that you recorded in step 5.
+13. In the right pane, verify that the Files tab is open.
+14. View the folders in the middle pane.
+Q1. Does a folder named Win10-05 exist?
+No, a folder named Win10-05 does not exist. When the Win10-05 virtual machine was first
+created, the virtual machine and its folder were named after the original virtual machine,
+Win10- Clone. When the virtual machine was renamed from Win10-Clone to Win10-05, the
+folder was not renamed.
+15. In the middle pane, select the Win10-Clone folder.
+16. In the right pane, view the Win10-Clone virtual machine files
+MSC IT Part-II(Sem-IV) Server Virtualization on VMware Platform Year-2023-24
+Task 2: Register a Virtual Machine in the vCenter Server Appliance Inventory
+If you removed a virtual machine from the vCenter Server Appliance inventory but did not remove its
+folder from the managed host’s datastore, you can return the virtual machine back to the inventory by
+registering the virtual machine’s .vmx file with vCenter Server Appliance.
+1. In the right pane, click the Win10-Clone.vmx file from the list of virtual machine files in the right
+pane.
+2. Click the Register VM icon.
+The screenshot shows an example of registering the Win10-Clone.vmx file
+On the Select a name and folder page, enter Win10-05.
+3. In the Select a location for the virtual machine pane, expand SA-Datacenter and select the Lab
+VMs folder.
+4. Click Next.
+5. In the Select a compute resource page, expand SA-Datacenter > Lab Servers.
+6. Select sa-esxi-01.vclass.local and click Next.
+7. On the Ready to Complete page, review the information and click Finish.
+8. In the Navigator pane, click the VMs and Templates icon and verify that the Win10-05
+virtual machine is in the Lab VMs folder.
+Task 3: Unregister and Delete Virtual Machines from the Datastore
+You can remove a virtual machine from the vCenter Server Appliance inventory and delete all the
+associated virtual machine files from the datastore, including the configuration file and the virtual
+disk files.
+1. In the Navigator pane right-click the Win10-05 virtual machine, select Delete from Disk, and
+click Yes to verify the deletion.
+2. Verify that the Win10-05 virtual machine no longer appears in the Navigator pane.
+3. Click the Storage icon and verify that the folder and files where the Win10-05 virtual machine
+was registered no longer exist.
+4. Click the VMs and Templates icon.
+Right-click the Photon-FromLib virtual machine, select Delete from Disk, and click Yes to verify
+the deletion.
+Task 4: Take Snapshots of a Virtual Machine
+You take a snapshot to preserve the state and the data of a virtual machine at the time the snapshot
+is taken. You use snapshots when you must revert to the same virtual machine state.
+
+1. In the Navigator pane, right-click the Win10-03 virtual machine and select Open Remote Console.
+2. You are logged in as vclass\administrator with the password VMware1!.
+3. On the virtual machine desktop, drag the IOMETER file to the Recycle Bin.
+4. Right-click the Recycle Bin icon and select Empty Recycle Bin to delete the IOMETER file
+permanently.
+5. Click Yes to verify the file deletion and leave the virtual machine console open.
+6. Return to vSphere Client.
+a. Click the VMware Remote Console icon in the Windows Tool bar. Clicking
+the VMware Remote Console icon minimizes the console window.
+7. Right-click the Win10-03 virtual machine.
+8. Select Snapshots > Take Snapshot.
+a. The Take Snapshot wizard appears
+
+9. Click OK and monitor the task in the Recent Tasks pane.
+10. Click the VMware Remote Console icon to return to the virtual machine desktop.
+11. On the virtual machine desktop, drag the CPUBUSY file to the Recycle Bin.
+12. Right-click the Recycle Bin icon and select Empty Recycle Bin to delete the CPUBUSY file
+permanently.
+13. Click Yes to verify the file deletion and leave the virtual machine console open.
+14. Return to vSphere Client.
+15. Right-click the Win10-03 virtual machine and select Snapshots > Take Snapshot to take
+another snapshot.
+16. Configure the snapshot
+
+17. Click OK and monitor the task in the Recent Tasks pane.
+Task 5: Add Files and Take Another Snapshot of a Virtual Machine
+You add some files to a virtual machine and create another snapshot of the virtual machine. This
+snapshot contain files that allow you to see how the virtual machines change when you revert to the
+different snapshots in subsequent tasks.
+1. Connect the ClassFiles-vSphere.iso file on the CD/DVD drive to the Win10-03 virtual machine.
+a. Right-click the Win10-03 virtual machine and select Edit Settings.
+b. Select Datastore ISO File from the CD/DVD drive 1 drop-down menu.
+c. Select Class-Datastore in the left pane.
+d. Select the Classfiles-vSphere.iso file in the middle pane.
+e. Click OK.
+f. Select the Connected check box for CD/DVD drive 1.
+g. Click OK to close the Edit Settings dialog box.
+
+2. Return to the Win10-03 virtual machine console.
+3. Click the Windows Start icon and navigate to Windows System > This PC.
+4. Click DVD Drive (D:) to view files.
+5. Copy the CPUBUSY VBScript Script file from the D: drive to the virtual machine’s desktop.
+6. Close the DVD Drive (D:) CDROM window.
+7. Return to vSphere Client and disconnect the CD/DVD drive from the Win10-03 virtual machine. a.
+From vSphere Client, right-click the Win10-03 virtual machine and select Edit Settings.
+b. Select Client Device from the CD/DVD drive 1 drop-down menu and click OK.
+8. Right-click the Win10-03 virtual machine and select Snapshots > Take Snapshot to take another
+snapshot.
+9. Configure the snapshot
+
+10. Click OK.
+11. Monitor the task in the Recent Tasks pane and wait for completion.
+This task takes slightly longer than previous snapshots because the guest memory is also being
+saved.
+12. Right-click the Win10-03 virtual machine and select Snapshots > Manage Snapshots.
+You should see three snapshots. The difference in icons is due to whether the Snapshot the virtual
+machine’s memory check box was selected when the snapshot was taken.
+13. Leave the Manage Snapshots open.
+14. Close the Win10-03 virtual machine console.
+a. Right click the VMware Remote Console icon in the Windows Tool bar and select Close
+Window.
+b. Close the empty browser tab
+Task 6 Revert the Virtual Machine to a Snapshot
+You revert a virtual machine to the state it had at the time when the selected snapshot was taken.
+1. In Manage Snapshots, select the Without iometer or cpubusy snapshot and click Revert to.
+2. Click OK to verify the revert.
+3. Click Done to close Manage Snapshots.
+
+1) Yes. The virtual machine powered off because the memory state was not preserved.
+4. In the Navigator pane, right-click the Win10-03 virtual machine and select Power > Power On.
+5. In the Navigator pane, right-click Win10-03 and select Open Remote Console.
+Wait for the boot process to complete.
+6. You are logged in as vclass\administrator with the password
+VMware1!. Q2. Is either IOMETER or CPUBUSY on the desktop?
+2) No. You removed these files before creating the snapshot named Without iometer
+or cpubusy.
+
+7. Close the Win10-03 virtual machine console.
+8. In vSphere Client, right-click the Win10-03 virtual machine and select Snapshots > Manage
+Snapshots.
+The You Are Here pointer should be below the snapshot named Without iometer or cpubusy.
+9. Select the With cpubusy snapshot on the Manage Snapshots tab and click Revert to.
+10. Click OK to verify the revert operation.
+
+11. Click Done to close Manage Snapshots.
+
+3) No. The virtual machine did not power off because the memory state was preserved.
+
+12. Open a console for the Win10-03 virtual machine.
+Q4. Is CPUBUSY on the desktop?
+4) Yes.
+Q5. Is IOMETER on the desktop?
+5) No.
+
+Task 7: Delete an Individual Snapshot
+You can remove a snapshot on the Snapshots tab. The snapshot files are consolidated and written to
+the parent snapshot disk.
+1. Return to vSphere Client.
+2. In the Navigator pane, right-click the Win10-03 virtual machine and select Snapshots > Manage
+Snapshots.
+The You are here pointer must be below the With cpubusy snapshot.
+3. Select the Without iometer or cpubusy snapshot and click the DELETE button.
+4. Click OK to verify the deletion.
+5. Click Done to close Manage Snapshots.
+6. Q1. Did the virtual machine power off?
+7. No.
+Q2. In the virtual machine console, is the CPUBUSY file on the desktop?
+8. Yes. The CPUBUSY file is still on the desktop because deleting the snapshot does not change the
+virtual machine's current state. Deleting the snapshot removes the ability to return to that
+snapshot's point in time.
+Task 8: Delete All Snapshots
+You can use the Delete All function to delete all the snapshots of a virtual machine.
+1. In the Navigator pane, right-click the Win10-03 virtual machine and select Snapshots > Manage
+Snapshots.
+2. In Manage Snapshots click Delete All.
+3. Click OK to verify that you want to delete all the remaining snapshots.
+Only the You are here pointer should appear on the snapshots tab.
+Q1. Were all the remaining snapshots deleted from the Manage Snapshots dialog box? Yes.
+4. Click Done to close Manage Snapshots.
+5. Return to the Win10-03 virtual machine console.
+Q2. Is CPUBUSY on the desktop, and why?
+Yes. The current state of the virtual machine is not altered. Snapshots are consolidated and
+then removed. An option to revert to those earlier points in time is no longer available.
+6. Close the Win10-03 virtual machine console.
+7. Close vSphere Client.
+8. vSphere Web Client is used in the next lab.
+9. Inform your instructor that you have completed this lab. If prompted, continue to the next lab.

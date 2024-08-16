@@ -1,0 +1,120 @@
+Practical No: 03
+(A) Aim: Create and manage VMFS datastores
+Objective: In this lab, you perform the following tasks:
+1. Create VMFS Datastores for the ESXi host
+2. Expand a VMFS Datastore to Consume Unused Space on a LUN
+3. Remove a VMFS Datastores
+4. Extend a VMFS Datastores
+5. Create a Second Shared VMFS Datastores Using iSCSI
+Steps:
+Task 1: Create VMFS Datastores for the ESXi Host
+You set up VMFS datastores on iSCSI-based storage devices to be used as repositories by virtual
+machines.
+1. If vSphere Client is not active, open your Firefox web browser, click vSphere Site-A Client in
+the favorites bar, and select vSphere Client (SA-VCSA-01).
+2. Log in with the user name administrator@vsphere.local and the password VMware1!.
+3. In vSphere Client, click the Menu icon and select Hosts and Clusters.
+4. Right-click SA-Datacenter and select Storage > New Datastore to start the New Datastore wizard.
+5. On the Type page, verify that VMFS is selected and click Next.
+6. On the Name and device selection page, enter VMFS-2 in the Datastore name text box.
+7. From the Select a host to view its accessible disks/LUNs drop-down menu, select your first host
+sa-esxi-01.vclass.local.
+A LUN list appears.
+8. In the LUN list, select LUN 2 and click Next.
+9. On the VMFS version page, accept VMFS 6 and click Next.
+10. On the Partition configuration page, reduce the LUN size.
+a. Move the Datastore Size slider to reduce the LUN size by 3 GB.
+b. Click Next.
+11. On the Ready to complete page, review the information and click Finish.
+12. Right-click SA-Datacenter in the inventory and select Storage > New Datastore.
+13. On the Type page, verify that VMFS is selected and click Next.
+14. On the Name and device selection page, enter VMFS-3 in the Datastore name text box.
+
+15. From the Select a host to view its accessible disks/LUNs drop-down menu, select sa-esxi-
+02.vclass.local.
+
+A LUN list appears.
+16. From the LUN list, select LUN 3 and click Next.
+17. On the VMFS version page, accept VMFS 6 and click Next.
+18. On the Partition configuration page, accept the default (full capacity) and click Next.
+19. On the Ready to complete page, review the information and click Finish.
+20. Monitor the progress in the Recent Tasks pane until the task is completed.
+21. In the Navigator pane, click the Storage icon.
+22. Expand SA-Datacenter, verify that the VMFS-2 and VMFS-3 datastores are listed in the datastore
+inventory.
+23. In the datastore inventory, click the VMFS-2 datastore.
+24. Click the Summary tab and record the value for storage capacity.
+Task 2: Expand a VMFS Datastore to Consume Unused Space on a LUN
+You dynamically increase the capacity of a VMFS datastore when more space is required by virtual
+machines.
+
+1. In the Navigator pane, right-click the VMFS-2 datastore and select Increase Datastore Capacity
+to open the Increase Datastore Capacity wizard.
+2. On the Select Device page, select LUN 2.
+3. Yes should appear in the Expandable column of LUN 2.
+4. Click Next.
+5. On the Specify Configuration page, accept Use “Free Space 3.00 GB” to expand the datastore
+from the Partition configuration drop-down menu and click Next.
+6. On the Ready to Complete page, review the information and click Finish.
+7. When the task is completed, select the VMFS-2 datastore in the Navigator pane.
+8. On the Summary tab, verify that the datastore size is increased to the maximum capacity, minus
+the space required for system overhead.
+The new capacity for the VMFS-2 datastore should be 9.75 GB.
+Task 3: Remove a VMFS Datastore
+You can delete any type of VMFS datastore, including the copies that you mounted without
+resignaturing. When you delete a datastore, it is destroyed and removed from all hosts.
+1. In the Navigator pane, right-click the VMFS-3 datastore and select Delete Datastore.
+2. When the Confirm Delete Datastore message appears, click Yes and wait for the task to be complete.
+3. In Recent Tasks, verify that the remove datastore task has completed.
+4. Verify that the VMFS-3 datastore has been removed from the Navigator pane.
+Task 4: Extend a VMFS Datastore
+You extend the capacity of a VMFS datastore when extra storage space is needed. You use a second
+LUN to extend the size of a datastore based on the first LUN.
+1. In Navigator pane, click the VMFS-2 datastore.
+2. Click the Configure tab.
+3. Select General from the center pane and click Increase.
+The Increase Datastore Capacity wizard starts.
+4. On the Select Device page, select LUN 3 and click Next.
+5. On the Specify Configuration page, select Use all available partitions from the Partition
+Configuration drop-down menu and click Next.
+The following message is expected: There is no extent of the datastore on this device. Selecting
+any configuration option will add a new extent to the datastore.
+6. On the Ready to Complete page, review the information and click Finish.
+7. When the task completes, refresh the page and select Device Backing in the middle pane.
+8. Verify that two extent device names appear in the Extent Name pane.
+The Extent Name pane should show both of your assigned devices. You might need to adjust the
+size of the Extent Name pane to view all the extent names.
+The screenshot shows the two extents listed in the Extent Name pane and the slider to adjust the
+size of the pane.
+9. Click the Summary tab.
+10. Record the new value for Total Capacity in the Summary tab. The
+value should be different from the value seen in task 2, step 7.
+11. On the Summary tab, click the Hosts tab in right pane.
+The two hosts are connected, indicating that this new datastore is shared between your two ESXi
+hosts.
+12. Right-click your VMFS-2 datastore in the Navigator pane and select Rename.
+13. In the Enter the new name text box, enter Shared-VMFS.
+14. Click OK.
+Task 5: Create a Second Shared VMFS Datastore Using iSCSI
+You use an iSCSI shared LUN to create a VMFS6 file system.
+1. In vSphere Client, click the Menu icon and select Hosts and Clusters.
+2. Right-click SA-Datacenter and select Storage > New
+Datastore. The New Datastore wizard starts.
+3. On the Type page, verify that VMFS is selected and click Next.
+4. On the Name and device selection page, in the Datastore name text box enter iSCSIDatastore.
+
+5. From the Select a host to view its accessible disks/LUNs drop-down menu, select sa-esxi-
+01.vclass.local.
+
+A LUN list appears.
+6. From the newly displayed LUN list, select LUN 5 named MSFT iSCSI Disk (Capacity 139.85
+GB) and click Next.
+7. On the VMFS version page, accept VMFS 6 and click Next.
+8. On the Partition configuration page, accept Use all available partitions and click Next.
+9. On the Ready to complete page, review the information and click Finish.
+10. Click the Storage icon in the navigator pane.
+11. Verify that iSCSI-Datastore is listed in the Storage view.
+12. On the Configure tab, select Connectivity and Multipathing to verify that both hosts can see the
+datastore.
+13. Leave vSphere Client open for the next lab.
+14. Inform your instructor that you have completed this lab. If prompted, continue to the next lab.

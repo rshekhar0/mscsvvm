@@ -1,0 +1,150 @@
+
+Practical 1(B)
+
+(B) Aim: Assign roles and permissions to Active Directory users to perform functions in
+vCenter Server Appliance.
+Objective : In this lab, you perform the following tasks:
+1. Join the vCenter Server Appliance to vclass.local Domain
+2. Add vclass.local as an Identity Source
+3. View Active Directory Users
+4. Assign Object Permissions to an Active Directory User
+5. Assign Root-Level Global Permission
+6. Log In with Windows Session Authentication
+7. Use an Active Directory User to Manage a Virtual Machine
+In this lab, you use vSphere Web Client to perform the tasks
+Steps:
+Task 1: Join the vCenter Server Appliance to vclass.local Domain
+You can configure a Platform Services Controller appliance or a vCenter Server Appliance with an
+embedded Platform Services Controller to join or leave an Active Directory domain. Verify that the
+user name you use to log in to the vCenter Server instance in the vCenter Server Appliance is a
+member of the System Configuration. Administrators group in vCenter Single Sign-On.
+In this lab you join VCSA to the vclass.local domain as an Active Directory (Integrated Windows
+Authentication) Identity Source. This allows an active directory user to be selected and assigned rights
+to manage a virtual machine.
+1. Open your Firefox web browser, click vSphere Site-A on the favorite bar, and select vSphere
+Web Client (SA-VCSA-01).
+2. Log in with the user name administrator@vsphere.local and the password VMware1!.
+3. In vSphere Web Client, click the Home icon and select Administration.
+4. In the Administration pane, navigate to Deployment and select System Configuration.
+5. Under System Configuration, select Nodes.
+6. Under Nodes, select sa-vcsa-01.vclass.local, and click the Manage tab.
+7. Under Advanced, select Active Directory, and click Join.
+
+8. In the sa-vcsa-01.vclass.local Join Active Directory wizard, enter the following
+information. Domain vclass.local
+
+Organizational Unit Leave blank
+User name administrator@vclass.local
+Password VMware1!
+
+9. Click OK.
+You will not receive an acknowledgment message after clicking OK. Move to the next step.
+10. Reboot the VCSA.
+a. From the sa-vcsa-01.vclass.local Actions menu, and select Reboot.
+b. In the sa-vcsa-01.vclass.local - Reboot dialog box, enter Joining sa-vcsa-01.vclass.local
+to the vclass.local domain., and click OK.
+The reboot takes 10 to 15 minutes.
+11. Close vSphere Web Client.
+Task 2: Add vclass.local as an Identity Source
+1. Open the Firefox web browser, click vSphere Site-A on the favorite bar, and select vSphere Web
+Client (SA-VCSA-01).
+2. Log in with the user name administrator@vsphere.local and the password VMware1!.
+3. In vSphere Web Client, click the Home icon, and select Administration.
+4. In the Administration pane, navigate to Single Sign-on and select Configuration.
+5. In the SSO Configuration for sa-vcsa-01.vclass.local pane, click the Identity Sources tab.
+6. On the Identity Sources tab, click the Add Identity Source icon (the green plus
+sign). The Add identity source wizard opens.
+7. On the Select Identity Source Type page, verify that Active Directory (Integrated Windows
+Authentication) is selected.
+8. Click Next.
+9. On the Configure Identity Source Type page, verify that VCLASS.LOCAL is entered in the
+Domain name field.
+10. Click Next.
+11. On the Ready to Complete page, review your entries and click Finish.
+12. On the Identity Sources tab, validate that vclass.local has been added as an identity source.
+Q1. What is the Type listed for the vclass.local identity source?
+1. vclass.local is listed as Active Directory (Integrated Windows Authentication).
+
+Task 3: View Active Directory Users
+1. In the Navigator pane, under Single Sign-on click Users and Groups.
+2. In the Users and Groups pane, the Users tab opens.
+3. On the Users tab, select vclass.local from the Domain drop-down menu.
+4. Locate the Administrator user name.
+The Administrator account is used in the next task.
+Task 4: Assign Object Permissions to an Active Directory User
+Permission is assigned at a vCenter Server level and propagated to children objects. The assigned
+permission applies to objects such as data centers, folders, clusters, hosts, virtual machines and other
+vCenter Server level objects.
+In vSphere Web Client, click the Home icon and select Hosts and Clusters.
+1. Right click sa-vcsa-01.vclass.local and click Add Permission.
+2. In the sa-vcsa-01.vclass.local - Add Permissions wizard, select Administrator and assign
+a role.
+a. Under Users and Groups, click Add.
+b. On the Select Users/Groups page, select vclass.local from the Domain drop-down menu.
+c. Under Users and Groups, click Administrator.
+d. Click Add.
+e. Verify that vclass.local\Administrator is listed in the Users text field.
+f. Click Check names.
+g. In Correct usernames, click OK.
+
+h. In Select User/Groups, click OK.
+i. Under Assigned Role, select Administrator from the Assigned Role drop-down menu.
+j. In sa-vcsa-01.vclass.local - Add Permission, click OK.
+Task 5: Assign Root-Level Global Permission
+Object level permissions are not available for Content Libraries, the direct parent for content
+libraries is the global root. To assign a permission on a content library, an Administrator must
+grant the permission to the user as a global permission.
+1. Click the Home icon and select Administration.
+2. In the Navigator pane, navigate to Access Control and select Global Permissions.
+3. In the Global Permissions pane, click Manage, and then click the Add permission icon (the
+green plus sign)
+4. In the Global Permissions Root - Add Permissions wizard, select Content library administrator
+(sample) and assign a role.
+a. Under Users and Groups, click Add.
+b. On the Select Users/Groups page, select vclass.local from the Domain drop-down menu.
+c. Under Users and Groups, click Administrator.
+d. Click Add.
+e. Verify that vclass.local\Administrator is listed in the Users text field.
+f. Click Check names.
+g. In Correct usernames, click OK.
+h. In Select User/Groups, click OK.
+i. Under Assigned Role, select Content library administrator (sample) from the Assigned
+Role drop-down menu.
+j. In sa-vcsa-01.vclass.local - Add Permission, click OK.
+k. Verify that VCLASS.LOCAL\Administrator is included in the User/Group list as
+Administrator.
+5. Log out of vSphere Web Client.
+
+Task 6: Log In with Windows Session Authentication
+You now have the option to log in to vSphere Client or vSphere Web Client as
+administrator@vclass.local or administrator@vsphere.local to complete the remaining labs.
+1. On the vSphere Web Client (SA-VCSA-01) login screen, select the Use Windows
+session authentication check box and click Login.
+2. You are logged in to vSphere Web Client (SA-VCSA-01) as administrator@vclass.local.
+Task 7: Use an Active Directory User to Manage a Virtual Machine
+1. In vSphere Web Client, click the Home icon and select VMs and Templates.
+2. In the Navigator pane, expand SA-Datacenter.
+3. Right-click Photon-ForTemplate and select Template > Convert to Template.
+4. Click Yes to verify converting the virtual machine to a template.
+5. In the Navigator pane, drag the Photon-ForTemplate template into the Templates folder.
+6. Expand the Templates folder.
+7. Right-click Photon-ForTemplate and select New VM from This Template.
+8. On the Select name and folder page, enter Photon-01 in the Virtual Machine Name text box.
+9. Expand the view for sa-vcsa-01.vclass.local > SA-Datacenter, select the Lab VMs folder and
+click Next.
+10. On the Select a compute resource page, expand SA-Datacenter > Lab Servers.
+11. Select the sa-esxi-01.vclass.local host and click Next.
+12. On the Select storage page, select Class-Datastore.
+13. From the Select virtual disk format drop-down menu, select Thin Provision and click Next.
+14. On the Select Clone options page, accept the default settings and click Next.
+15. On the Ready to complete page, review the information and click Finish.
+16. In the Recent Tasks pane, monitor the progress of the template deployment task and wait for
+completion.
+17. In the navigator pane, select Photon-01.
+
+18. In the right pane, click the Summary tab.
+19. In the Navigation pane, right-click Photon-01, then click Delete from Disk.
+20. Click Yes to verify the deletion.
+21. Log out of vSphere Web Client and close the Firefox Web browser.
+22. In the next lab, you use vSphere Client to perform the tasks.
+23. Inform your instructor that you have completed this lab. If prompted, continue to the next lab.

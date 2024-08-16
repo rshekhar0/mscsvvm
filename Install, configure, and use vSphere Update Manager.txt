@@ -1,0 +1,111 @@
+(B) Aim: Install, configure, and use vSphere Update Manager.
+Objective: In this lab, you perform the following tasks:
+1. Modify the Cluster Settings
+2. Configure vSphere Update Manager
+3. Create a Patch Baseline
+4. Attach a Baseline and Scan for Updates
+5. Stage the Patches onto the ESXi Host
+6. Remediate the ESXi Host
+In this lab, you use vSphere Web Client to perform the tasks.
+Steps:
+Task 1: Modify the Cluster Settings
+You enable vSphere DRS in the fully-automated mode so that vSphere DRS determines the best possible
+distribution of virtual machines among your ESXi hosts and automatically performs the migration.
+1. On the vSphere Web Client Home page, select Hosts and Clusters.
+2. If not already selected, select SA-Compute-01 in the Navigator pane.
+3. Right-click SA-Compute-01 and select Settings.
+4. Select vSphere DRS and click Edit.
+The Edit Cluster Settings dialog box appears.
+5. On the vSphere DRS page, select Fully Automated from the DRS Automation drop-down menu.
+This operation enables vSphere DRS to migrate virtual machines as necessary without asking
+permission from an administrator.
+6. In the left pane of the Edit Cluster Settings window, select Admission Control.
+7. Verify that Disabled is selected from the Define Host Failover capacity By drop-down menu.
+8. Click OK.
+9. Click the Monitor tab for SA-Compute-01, then click the Resource Reservation tab.
+10. Select CPU and review the Reservation (MHz) column to verify that no CPU reservations are
+assigned to virtual machines.
+11. Select Memory and review the Reservation (MB) column to verify that no memory reservations
+are assigned to virtual machines.
+CAUTION Removing CPU and memory reservations is necessary in this lab environment for
+training purposes. In a production environment, you might not need to remove them.
+Task 2: Configure vSphere Update Manager
+You can import patches and extensions manually by using an offline bundle, or you can use a shared
+repository or the Internet as the download source for patches and extensions.
+1. Click the Home icon and select Update Manager.
+2. In the Navigator pane, select sa-vcsa-01.vclass.local.
+3. In the right pane, click the Manage tab.
+4. In the middle pane, select Download Settings.
+5. In the Download Settings pane, click Import Patches.
+6. Click Browse, navigate to the Desktop\Class Materials and Licenses\Class Folder, select the
+ESXi670-2018xxxxx.zip file, and click Open.
+7. Wait until the patch bundle has been uploaded and the Patch file upload is successful message is
+displayed.
+8. Click Next.
+
+9. If a security warning appears, select the Install this certificate and do not display any security
+warnings check box and click Ignore.
+10. When the import operation is complete, click Finish.
+Task 3: Create a Patch Baseline
+You create a baseline to specify the requirements that should be met by vSphere objects, such as
+virtual machines, ESXi hosts, or virtual appliances. Your patch baseline contains a collection of
+patches, extensions, or upgrades.
+1. Click the Hosts Baselines tab, and click New Baseline to open the New Baseline wizard.
+2. On the Name and Type page, enter ESXi Host Update in the Name text box.
+3. In the Description text box, enter Patch for ESXi Host 6.7 and click Next.
+4. On the Patch Options page, click Fixed and click Next.
+5. On the Patches page, select all patches from the list.
+6. Click Next.
+7. On the Ready to Complete page, click Finish
+Task 4: Attach a Baseline and Scan for Updates
+You use scanning to evaluate a set of hosts, virtual machines, or virtual appliances against the
+patches, extensions, and upgrades that are included in the attached baselines and baseline groups.
+1. On the top-right corner of the Baselines tab, click Go to compliance view.
+2. In the Navigator pane, select sa-esxi-02.vclass.local and click the Update Manager tab in the right
+pane
+3. Click Attach Baseline. The Attach Baseline or Baseline Group dialog box appears.
+4. Select the ESXi Host Update check box and click OK.
+5. Click Scan for Updates.
+6. In the Scan for Updates window, verify that the Patches and Extensions and Upgrades check
+boxes are both selected and click OK.
+7. Monitor the Recent Tasks pane and wait for the scan to complete.
+8. Select the ESXi Host Update baseline in the Baseline list and verify that the ESXi host is listed as
+noncompliant in the center bottom pane.
+Task 5: Stage the Patches onto the ESXi Host
+You stage patches and extensions onto the ESXi hosts so that they are available locally when the
+remediation process takes place. This method speeds up remediation.
+1. In vSphere Web Client, if not already selected, select sa-esxi-02.vclass.local in the Navigator
+pane.
+2. In the right pane, click Stage
+Patches. The Stage wizard starts
+3. On the Baselines page, select the ESXi Host Update baseline and click Next.
+4. On the Hosts page, verify that the sa-esxi-02.vclass.local host is selected and click Next.
+5. On the Patches and Extension page, accept the default settings and click Next.
+6. On the Ready to Complete page, review the information and click Finish.
+7. Monitor the Recent Tasks pane for the staging tasks to complete.
+Task 6: Remediate the ESXi Host
+You temporarily disable cluster features, such as VMware vSphere® Distributed Power
+ManagementTM in the cluster and apply the patches to the ESXi host.
+1. In vSphere Web Client, if not already selected, select sa-esxi-02.vclass.local in the Navigator pane.
+2. In the right pane, click Remediate. The Remediate wizard starts.
+3. On the Select Baselines page, select the ESXi Host Update baseline and click Next.
+4. On the Select Target objects page, verify that sa-esxi-02.vclass.local is selected and click Next.
+5. On the Patches and Extensions page, leave the default settings and click Next.
+6. On the Advanced Options page, select the Schedule this action to run later check box.
+7. Enter Remediate sa-esxi-02 ESXi host on SA-Compute-01 in the Task Name text box
+8. For Remediation Time, enter a time that is 3 minutes from the current time and leave the other
+settings at their default values.
+9. Click Next.
+10. On the Host Remediation Options page, select the Disable any removeable media devices connected
+to the virtual machines on the host check box and leave the other settings at their default values.
+11. Click Next.
+
+12. On the Cluster Remediation Options page, deselect the Disable Distributed Power Management
+(DPM) if it is enabled for any of the selected clusters check box and click Next. 13. On the Ready
+to Complete page, review the information and click Finish.
+13. Monitor the Recent Tasks pane. If the expected results are not seen, refresh vSphere Web
+Client. Q1. Was the ESXi host patched successfully?
+Yes.
+14. Close vSphere Web Client.
+This is the last VMware vSphere 6.7 Install, Configure, Manage lab.
+15. Inform your instructor that you have completed all labs for this class

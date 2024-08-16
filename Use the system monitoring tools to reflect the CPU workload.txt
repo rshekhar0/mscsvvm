@@ -1,0 +1,70 @@
+(B) Aim: Use the system monitoring tools to reflect the CPU workload.
+Objective: In this lab, you perform the following tasks:
+1. Create the CPU Workload
+2. Use Performance Charts to Monitor CPU Utilization
+3. Undo Changes Made to the Virtual Machines
+In this lab, you use vSphere Web Client to perform the tasks.
+Steps:
+Task 1: Create the CPU Workload
+You run the CPUBUSY script in each virtual machine to create heavy CPU workload in your lab
+environment for testing.
+1. If vSphere Web Client is not active, open your Firefox web browser, click vSphere Site-A on the
+favorite bar, and select vSphere Web Client (SA-VCSA-01).
+2. Log in with the user name administrator@vsphere.local and the password VMware1!.
+3. Click the Home icon and select VMs and Templates.
+4. Expand the view of the Navigator pane.
+5. Validate that the Win10-02 and Win10-04 virtual machines are powered on.
+6. Open consoles for Win10-02 and Win10-04.
+7. On each virtual machine desktop, right-click the CPUBUSY script file and select Open with
+Command Prompt.
+Task 2: Use Performance Charts to Monitor CPU Utilization
+You use the performance charts to monitor the CPU, memory, disk, network, and storage metrics.
+1. Return to vSphere Web Client.
+2. In the Navigator pane, select the Win10-02 virtual machine.
+3. Click the Monitor tab, click Performance and select Advanced in the middle pane. The real-time
+CPU usage graph appears.
+4. Click the Chart Options link.
+The Chart Options dialog box appears.
+5. Verify that CPU is selected in the Chart Metrics pane.
+6. In the Timespan drop-down menu, verify that Real-time is selected.
+7. In the Select object for this chart pane on the right, deselect the Win10-02 virtual machine check
+box.
+
+8. In the Select counters for this chart pane, click None to deselect all counters.
+9. In the Select counters for this chart pane, select the Ready and Used check boxes and click
+OK. The CPU/Real-time chart for the Win10-02 virtual machine opens.
+10. Open a new tab in your Firefox web browser and click the vSphere Web Client shortcut.
+11. Click the Home icon and select VMs and Templates and expand the view.
+12. In the Navigator pane, select the Win10-04 virtual machine.
+13. Repeat steps 3 through 9 to configure the CPU Performance graph for the Win10-04 virtual
+machine.
+14. In the web browser window for each virtual machine, point to the end of the line graph to view
+the current CPU ready value.
+15. Record the current CPU ready value for each virtual machine and leave the Performance Chart
+windows open.
+• Win10-02
+• Win10-04
+16. In each virtual machine console, press Ctrl+C in the Command Prompt window to stop the
+CPUBUSY script. CAUTION This script must be stopped in each virtual machine. If the script is
+left running, the next lab is affected.
+17. In the vSphere Web Client browser window for each virtual machine, point to the end of the line
+graph to view the current CPU ready value.
+18. Wait for the chart to be updated and compare the CPU ready value with what you recorded in step
+Performance charts update every 20 seconds.
+Q1. Did the CPU ready value change? If it did, what is the reason for the change?
+Yes. After the scripts stop, the CPU Ready value decreases significantly because CPU
+contention does not occur
+Task 3: Undo Changes Made to the Virtual Machines
+You revert the configuration changes made to each virtual machine.
+1. Close the second vSphere Web Client tab and the two virtual machine consoles.
+2. In the first vSphere Web Client tab, remove the scheduling affinity value on the Win10-02 virtual
+machine.
+a. In the Navigator pane, right-click the Win10-02 virtual machine and select Edit Settings.
+b. Click the arrow next to CPU to expand the view.
+c. In the Scheduling Affinity text box, delete the value 1 and click OK.
+3. Repeat step 2 to remove the scheduling affinity value on the Win10-04 virtual machine.
+4. Right-click the Win10-02 virtual machine, select Power > Shut Down the Guest OS.
+5. Click Yes to verify the guest shut down.
+6. Repeat steps 4 and 5 for the Win10-04 virtual machine.
+7. Leave vSphere Web Client open for the next lab.
+8. Inform your instructor that you have completed this lab. If prompted, continue to the next lab.
