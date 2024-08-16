@@ -1,0 +1,27 @@
+https://gofile.io/d/wACGAj
+
+Vmware workstation
+
+VMware_ESXi_6.7.1.iso
+Vmware esxi
+---------------------------
+VMware-VCSA-all-6.7.0-8832884.iso(Extract)
+
+E:\Setup\VMware-VCSA-all-6.7.0-8832884\vcsa-ui-installer\win32\installer.exe
+
+pass-Shivam!123
+
+----
+vCenter Server Appliance Installer
+
+https://192.168.177.143:5480/
+
+administrator@vsphere.local
+
+Shivam!1234
+
+vSphere Client
+
+vSphere web Client
+
+https://photon-machine:443
